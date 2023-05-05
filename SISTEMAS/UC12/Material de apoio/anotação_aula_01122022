@@ -1,0 +1,299 @@
+Programação Orientada a Objetos
+
+O que é um objeto.
+
+Nome
+Características
+Ações
+
+Pessoa
+
+cor,sexo,tamanho,
+idade,estrutura,
+orgaos,sangue,pelos...
+
+andar(),falar(),
+comer()...
+
+public class Pessoa{
+	
+	public string cor,orgaos,estrutura,sangue;
+	public int idade;
+
+
+
+	public void andar(){
+
+	}
+	public void falar(){
+	
+	}
+	
+	public void comer(){
+		andar();
+	}
+
+
+}
+
+
+public static double somaValor(double num1, double num2){
+	
+	return (num1+num2);
+}
+
+tipo de acesso
+
++ public
+- private
+# protected
+
+visibilidade
+
+- static
+
+tipo de retorno
+
+todos os tipos
+de varáveis
+(double, float, string, boolean, datetime, int)
+
+void - sem retorno
+
+nome do método
+
+somaValor
+
+parâmetros
+
+todos os tipos
+de varáveis
+(double, float, string, boolean, datetime, int)
+
+*** 06/12/2022 ***
+
+a+b
+a-b
+a*b
+a/b
+a%b
+
+Retorno do valor é boleano
+True or False
+
+a==b
+a!=b
+a>b
+a<b
+a>=b
+a<=b
+
+Operador de atribuição
+
+a=10;
+y=20;
+
+a = a + y
+30 = 10 + 20
+50 = 30 + 20
+70 = 50 + 20
+
+Operador de incremento e decremento
+
+contador
+
+a++ -> a = a + 1
+a-- -> a = a - 1
+
+++a -> a = 1 + a
+--a -> a = 1 - a
+
+Botão
+
+Somar -> +
+Subtração -> -
+Multiplicação -> X
+Divisão -> /
+
+Resposta:
+
+Soma -> 
+Subtração ->
+Divisão ->
+Multiplicação ->
+
+Trabalhando com constantes em c#
+
+
+*** Estrutura de decisão
+
+if(true){
+	//responde se for verdadeiro
+}
+
+estrutra de decisão aninhado
+
+if(true){
+	if(true){
+		if(true){
+		//responde se for verdadeiro		
+		}
+	}
+}
+
+
+if(true){
+	//ser for verdadeiro entra aqui
+}
+else{
+	//senão se for falso entra aqui
+}
+
+if(true){
+	
+}
+else if(true){
+	
+}
+else if(true){
+	
+}else{
+	
+}
+
+int operador;
+
+Digite o número para selecionar a fruta:
+
+1-Banana
+2-Maça
+3-Pera
+4-Melancia
+5-Sair
+
+switch(operador){
+	case 1: MessageBox.Show("Banana");
+	break;
+	case 2: MessageBox.Show("Maça");
+	break;
+	case 3: MessageBox.Show("Pera");
+	break;
+	case 4: MessageBox.Show("Melancia");
+	break;
+	
+	default: Close();
+	break;	
+}
+
+09/02/2023
+
+Desativando o botão de fechar nas janelas
+
+importar a classe abaixo em cada janela
+
+using System.Runtime.InteropServices;
+
+Variável global
+
+//Criando variáveis para controle do menu
+const int MF_BYCOMMAND = 0X400;
+[DllImport("user32")]
+static extern int RemoveMenu(IntPtr hMenu, int nPosition, int wFlags);
+[DllImport("user32")]
+static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+[DllImport("user32")]
+static extern int GetMenuItemCount(IntPtr hWnd);
+
+
+Inserir no loading
+
+IntPtr hMenu = GetSystemMenu(this.Handle, false);
+int MenuCount = GetMenuItemCount(hMenu) - 1;
+RemoveMenu(hMenu, MenuCount, MF_BYCOMMAND);
+
+
+14/02/2023
+
+-- Pesquisa por código
+
+select * from tbclientes where codigo = 1;
+
+
+-- Pesquisa por nome
+
+select * from tbclientes where nome like '%senac%';
+
+
+-- 23/02/2023
+
+Estrutura de decisão
+
+
+public double somarValor(double num1, double num2){
+	return (num1+num2);
+}
+
+btn_somar_click(){
+	
+	double valor1,valor2;
+
+	if(txtNum1.Text.Equals("") && txtNum2.Text.Equals("")){
+
+		Messa...("Favor inserir valores");
+
+	}
+	else{
+
+		try{
+			valor1 = Convert.toDouble(txtNum1.Text);
+			valor2 = Convert.toDouble(txtNum2.Text);
+
+			lblResposta.Text = somaValor(valor1,valor2).toString();
+		}
+		catch(Exception){
+			MessageBox.show("Insira somente números...");
+			txtNum1.Focus();
+			txtNum1.Clear();
+			txtNum2.Clear();
+		}
+
+	}
+
+}
+
+Estrutura de repetição
+
+int cont = 0;
+
+while(cont < 10){
+	
+	cont++;
+	cont = cont+1;
+
+}
+
+
+do{
+	
+	somaValor(10;20);
+	cont++;
+	
+}while(cont < 10);
+
+for(int cont=0; cont<3; cont++){
+	for(int i=0; i<3; i++){
+		imprime cont+i;
+	}
+}
+
+Teste de mesa
+
+cont=0 - cont < 3 - cont++	||	i=0 - i<3 - i++ || imprime cont+i
+0          0 < 3  - 0			0	   0< 3 i=0+1    0+0
+
+
+
+
+
+
+

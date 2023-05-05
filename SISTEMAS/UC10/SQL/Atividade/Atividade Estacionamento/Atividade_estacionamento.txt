@@ -1,0 +1,35 @@
+seleCriar o banco de dados estacionamento.
+Criar a tabela carros com os seguintes campos:
+
+- codigo
+- placa
+- cor
+- modelo
+- ano char(4) - '2008' 
+- data entrada
+- hora entrada
+- data saída
+- hora saída
+
+ano ,
+
+'2022/11/10'
+
+horaEntrada time,
+
+'15:51:00'
+
+
+- Para os tipos de campos e tamanhos fica a seu critério
+verificar (Páginas 16 e 17 da apostila)
+
+- Inserir na tabela carros pelo menos 10 registros
+- Alterar pelo menos 5 registros 
+- Apagar pelo menos 3 registros
+- Pesquisar os carros pelo nome
+- Pesquisar os carros pelo código
+- Pesquisar os carros pela data de entrada
+- Pesquisar os carros pela pela cor
+- Pesquisar os carros pela pelo modelo
+
+*** Salvar o script do banco na pasta de atividades
