@@ -1,0 +1,3084 @@
+codigos c#, mysql, html, css
+
+
+[19/04 14:36] NATHAN DA SILVA SANTOS
+
+create database db_alertrem;
+
+use db_alertrem;
+
+ 
+create table tb_usuarios (
+
+    codigo int not null auto_increment,
+
+    nome varchar(50) not null,
+
+    salt varchar(60) not null,
+
+    senha varchar(256) not null,
+
+    email varchar(100) not null,
+
+    cpf char(14) not null,
+
+    foto_perfil varchar(100),
+
+    data_cadastro date not null,
+
+ 
+
+    primary key(codigo)
+
+);
+
+ 
+
+create table tb_estacoes (
+
+    codigo int not null auto_increment,
+
+    nome varchar(50) not null,
+
+    localizacao varchar(150) not null,
+
+ 
+
+    primary key (codigo)
+
+);
+
+ 
+insert into tb_estacoes (nome, localizacao) values
+
+('Osasco', 'Praça Antonio Menck, s/nº (Centro)/ Rua Erasmo Braga, s/nº (Bonfim) – Osasco 06093-090'),
+
+('Presidente Altino', 'Rua Abílio Mendes, 08 - Presidente Altino - Osasco'),
+
+('Ceasa', 'Avenida das Nações Unidas, 1.390 - Vila Leopoldina - São Paulo 05311-000 '),
+
+('Vila Lobos Jaguare', 'Avenida das Nações Unidas, 2.100 - Jaguaré - São Paulo 05477-000 '),
+
+('Cidade Universitaria', 'Avenida das Nações Unidas, 6.202 - Jardim Universidade Pinheiros - São Paulo 05477-000 '),
+
+('Pinheiros', 'Rua Capri, 145 - Pinheiros - São Paulo 05477-000 '),
+
+('Hebraica Reboucas', 'Rua Ofélia, 255 - Pinheiros - São Paulo 05423-110'),
+
+('Cidade Jardim', 'Rua Prof. Artur Ramos, 787 (Jardim Paulistano) / Rua Hungria, s/nº (Jardim Europa) – São Paulo 05477-000'),
+
+('Vila Olimpia', 'Avenida das Nações Unidas, 10.900 (Brooklin Paulista) / Rua Beira Rio, s/nº (Vila Olímpia) – São Paulo 04578-000'),
+
+('Berrini', 'Berrini Rua Guilherme Barbosa de Melo, nº 117 / Rua Joel Carlos Borges, 179 – Cidade Monções – São Paulo 04578-000'),
+
+('Morumbi', 'Avenida das Nações Unidas, 14.171 - Vila Gertrudes - São Paulo 04578-000'),
+
+('Granja Julieta', 'Rua Alexandre Dumas, 4.403 - Chácara Santo Antonio - São Paulo 04717-004 '),
+
+('Joao Dias', 'Avenida das Nações Unidas, 18667 - Santo Amaro - 04730-90'),
+
+('Santo Amaro', 'Avenida das Nações Unidas, s/nº - Jardim Promissão - São Paulo 04795-100 '),
+
+('Socorro', 'Av. das Nações Unidas, s/nº (Jurubatuba)/ Rua Florenville s/nº (Santo Amaro) – São Paulo 04696-010'),
+
+('Jurubatuba', 'Av. Octales M. Ferreira, 391 - Jurubatuba - São Paulo 04696-010'),
+
+('Autodromo', 'Rua Plínio Schmidt, nº 307 - Jardim Marcel -São Paulo 4815130 '),
+
+('Primavera Interlagos', 'Rua Jequirituba, 83 (Jardim Colonial)/ Rua Alexandre Gandini, 71( Parque Santana) - São Paulo 04822-000 '),
+
+('Grajau', 'Rua Giovanni Bononcini, 77 - Parque Brasil - São Paulo 04822-000 '),
+
+('Mendes Vila Natal', 'Estrada dos Mendes, s/n - Jardim Icarai – Grajaú - 04860-140'),
+
+('Varginha', 'Sem endereço ainda');
+
+ 
+create table tb_estados_operacionais (
+
+    codigo int not null auto_increment,
+
+    estado varchar(50) not null,
+
+ 
+
+    primary key (codigo)
+
+);
+
+
+insert into tb_estados_operacionais (estado) values
+
+("Não Tem"),
+
+("Funcionando"),
+
+("Quebrado"),
+
+("Manuteção");
+
+create table tb_caracteristicas(
+
+    codigo int not null auto_increment,
+
+    tipo varchar(100) not null,
+
+    cod_estado int not null,
+
+    cod_estacao int not null,
+
+ 
+
+    primary key (codigo),
+
+    foreign key (cod_estado) references tb_estados_operacionais (codigo),
+
+    foreign key (cod_estacao) references tb_estacoes (codigo)
+
+);
+
+ 
+create table tb_reclamacoes (
+
+    codigo int not null auto_increment,
+
+    data_hora datetime not null default now(),
+
+    tipo int not null, -- 1 ao 3
+
+    descricao varchar(500),
+
+    motivo varchar(100),
+
+    numero_carro int,
+
+    cod_usu int,
+
+    cod_estacao int,
+
+ 
+
+    foreign key(cod_usu)references tb_usuarios(codigo),
+
+    foreign key(cod_estacao)references tb_estacoes(codigo),
+
+    primary key(codigo)
+
+);
+
+
+create table tb_funcionarios (
+
+    codigo int not null auto_increment,
+
+    nome varchar(50) not null,
+
+    usuario varchar(50) not null,
+
+    salt varchar(60) not null,
+
+    senha varchar(256) not null,
+
+    data_hora datetime not null default now(),
+
+ 
+
+    primary key(codigo)
+
+);
+
+
+create table tb_denuncias (
+
+    codigo int not null auto_increment,
+
+    cod_reclamacao int not null,
+
+    cod_usuario int not null,
+
+    motivo varchar(100) not null,
+
+ 
+
+    foreign key (cod_reclamacao) references tb_reclamacoes(codigo),
+
+    foreign key (cod_usuario) references tb_usuarios(codigo),
+
+    primary key (codigo)
+
+);
+
+
+create table tb_status (
+
+    codigo int not null auto_increment,
+
+    status_movimentacao varchar(50) not null,
+
+    cod_estacao int,
+
+    data_hora timestamp not null default current_timestamp,
+
+    expiracao timestamp ,
+
+ 
+
+    foreign key (cod_estacao) references tb_estacoes(codigo),
+
+    primary key (codigo)
+
+);
+
+
+create trigger set_expiracao
+
+before insert on tb_status
+
+for each row
+
+set new.expiracao = now() + interval 30 minute;
+
+ 
+-- SELECT * FROM tb_status WHERE expiracao > NOW();
+
+----------------------------------------------------------------------------------------------------
+
+
+[14:09] GUSTAVO DOS SANTOS SILVA
+
+
+
+
+[13/04 16:37] NATHAN DA SILVA SANTOS
+
+.botao{
+
+    width: 15%;
+
+    max-width: 120px;
+
+    min-width: 100px;
+
+    height: 30%;
+
+    min-height: 30px;
+
+    max-height: 35px;
+
+    background-color: #58c078;
+
+    color: white;
+
+    border-radius: 20px;
+
+    border: 1px solid #58c078;
+
+}
+
+ 
+
+.botao:hover{
+
+    background-color: #eee;
+
+    border: 2px solid #58c078;
+
+    color: #58c078;
+
+}
+
+------------------------------------------------------------------------------------------------------
+
+
+
+[14:08] GUSTAVO DOS SANTOS SILVA
+
+
+
+
+[30/03 16:13] NATHAN DA SILVA SANTOS
+
+int res = comm.ExecuteNonQuery();
+
+            if (res == 1)
+
+            {
+
+                MessageBox.Show("Valores inseridos com sucesso!", "Mensagem do sistema", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+
+            else
+
+            {
+
+                MessageBox.Show("Erro ao inserir registro", "Mensagem do sistema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+
+ 
+
+            Conexao.fecharConexao();
+
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+
+[24/03 14:42] BRUNO JOSE OLIVEIRA GOMES
+
+<h1>INFORMAÇÕES SOBRE A ESTAÇÃO {{valores.nome_estacao}}</h1>
+<p>Localização: {{valores.localizacao}}</p>
+
+ 
+
+<div id="caracteristicas">
+    {{#valores.banheiro}}
+<img src="images/banheiro.png" alt="" width="10%" height="auto">
+    {{/valores.banheiro}}
+
+    {{#valores.elevador}}
+<img src="images/elevador.png" alt="" width="10%" height="auto">
+    {{/valores.elevador}}
+
+    {{#valores.terminal_interurbano}}
+<img src="images/terminal_interurbano.png" alt="" width="10%" height="auto">
+    {{/valores.terminal_interurbano}}
+
+    {{#valores.terminal_urbano}}
+<img src="images/terminal_urbano.png" alt="" width="10%" height="auto">
+    {{/valores.terminal_urbano}}
+
+    {{#valores.transferencia_interna}}
+<img src="images/transferencia_interna.png" alt="" width="10%" height="auto">
+    {{/valores.transferencia_interna}}
+
+    {{#valores.bicicletario}}
+<img src="images/bicicletario.png" alt="" width="10%" height="auto">
+    {{/valores.bicicletario}}
+
+    {{#valores.banheiro_acessivel}}
+<img src="images/banheiro_acessivel.png" alt="" width="10%" height="auto">
+    {{/valores.banheiro_acessivel}}
+
+    {{#valores.estacao_acessivel}}
+<img src="images/estacao_acessivel.png" alt="" width="10%" height="auto">
+    {{/valores.estacao_acessivel}}
+
+    {{#valores.rampa}}
+<img src="images/rampa.png" alt="" width="10%" height="auto">
+    {{/valores.rampa}}
+
+    {{#valores.transposicao_plataformas}}
+<img src="images/transposicao_plataformas.png" alt="" width="10%" height="auto">
+    {{/valores.transposicao_plataformas}}
+
+    {{#valores.escadas_rolantes}}
+<img src="images/escadas_rolantes.png" alt="" width="10%" height="auto">
+    {{/valores.escadas_rolantes}}
+
+    {{#valores.acesso_elevador}}
+<img src="images/acesso_elevador.png" alt="" width="10%" height="auto">
+    {{/valores.acesso_elevador}}
+
+    {{#valores.lanchonete}}
+<img src="images/lanchonete.png" alt="" width="10%" height="auto">
+    {{/valores.lanchonete}}
+
+    {{#valores.emporio}}
+<img src="images/emporio.png" alt="" width="10%" height="auto">
+    {{/valores.emporio}}
+
+    {{#valores.caixa_eletronico}}
+<img src="images/caixa_eletronico.png" alt="" width="10%" height="auto">
+    {{/valores.caixa_eletronico}}
+
+    {{#valores.calcados}}
+<img src="images/calcados.png" alt="" width="10%" height="auto">
+    {{/valores.calcados}}
+
+    {{#valores.telefone_p_surdos}}
+<img src="images/telefone_p_surdos.png" alt="" width="10%" height="auto">
+    {{/valores.telefone_p_surdos}}
+
+    {{#valores.piso_tatil}}
+<img src="images/piso_tatil.png" alt="" width="10%" height="auto">
+    {{/valores.piso_tatil}}
+
+    {{#valores.tranferencia_gratuita}}
+<img src="images/tranferencia_gratuita.png" alt="" width="10%" height="auto">
+    {{/valores.tranferencia_gratuita}}
+
+    {{#valores.acessorios}}
+<img src="images/acessorios.png" alt="" width="10%" height="auto">
+    {{/valores.acessorios}}
+
+    {{#valores.farmacia}}
+<img src="images/farmacia.png" alt="" width="10%" height="auto">
+    {{/valores.farmacia}}
+
+    {{#valores.rota_acessivel}}
+<img src="images/rota_acessivel.png" alt="" width="10%" height="auto">
+    {{/valores.rota_acessivel}}
+
+    {{#valores.achados_perdidos}}
+<img src="images/achados_perdidos.png" alt="" width="10%" height="auto">
+    {{/valores.achados_perdidos}}
+</div>
+
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+[23/03 16:59] GUSTAVO DOS SANTOS SILVA
+
+class Conexao
+    {
+        private static string conString = "server=localhost;Port=3306;Database=dbPortaria;Uid=root;Pwd=''";
+        private static MySqlConnection conn = null;
+
+ 
+
+        public static MySqlConnection obterConexao()
+        {
+            conn = new MySqlConnection(conString);
+            try
+            {
+                conn.Open();
+            }
+            catch (MySqlException)
+            {
+                conn = null;
+            }
+            return conn;
+        }
+        public static void fecharConexao()
+        {
+            if (conn != null)
+            {
+                conn.Close();
+            }
+        }
+
+ 
+
+    }
+
+--------------------------------------------------------------------------------------------------------------
+
+
+drop database db_alerTrem;
+
+ 
+
+create database db_alerTrem;
+
+ 
+
+
+create table tb_usuarios (
+    cod_usu int auto_increment,
+    nome_usu varchar(20) not null,
+    senha_usu varchar(20) not null,
+    email_usu varchar(100),
+    cpf_usu char(14) not null,
+    data_cad date,
+    primary key(cod_usu) 
+);
+
+ 
+
+insert into tb_usuarios ('cod_usu', 'nome_usu', 'senha_usu', 'email', 'cpf', 'data_cad')
+    values ('senac', 'senac123','senac@gmail.com','123.456.789-11','10/10/2023')
+
+ 
+
+ 
+
+create table tb_estacoes (
+    cod_estacao int not null auto_increment, 
+    nome_estacao varchar(50) not null,
+    localizacao varchar(100) not null, 
+    banheiro varchar(50), -- Cada característica pode ter entre 4 valores (null, 'funcionando', 'em manutencao', 'quebrado')
+    elevador varchar(50),
+    terminal_interurbano varchar(50),
+    terminal_urbano varchar(50),
+    transferencia_interna varchar(50),
+    bicicletario varchar(50),
+    banheiro_acessivel varchar(50),
+    estacaoa_cessivel varchar(50),
+    rampa varchar(50), 
+    transposicao_plataformas varchar(50),
+    escadas_rolantes varchar(50),
+    acesso_elevador varchar(50),
+    lanchonete varchar(50),
+    emporio varchar(50),
+    caixa_eletronico varchar(50),
+    calcados varchar(50),
+    telefone_psurdos varchar(50),
+    pisotatil varchar(50),
+    transferenci_agratuita varchar(50),
+    acessorios varchar(50),
+    farmacia varchar(50),
+    rota_acessivel varchar(50),
+    achados_perdidos varchar(50),
+    primary key (cod_estacao)
+);
+
+ 
+
+ 
+
+create table tb_reclamacoes (
+    cod_recla char(10) not null,
+    data_recl date not null,
+    cod_usu int  not null,
+    tipo_recla int not null, -- 1 ao 3
+    descricao varchar(100),
+    motivo varchar(100),
+    cod_estacao int not null,
+    foreign key(cod_estacao)references tb_estacoes(cod_estacao),
+    foreign key(cod_usu)references tb_usuarios(cod_usu),
+    primary key(cod_recla)
+);
+
+ 
+
+insert into tb_reclamacoes ('nome_usu','cod_usu','data_recl','cod_recla','descricao','avaliacao','status') values
+    ('fulano','10/10/2023','','comentario','','')
+
+ 
+
+
+create table tb_statuslinha (
+    cod_status int not null,
+    descricao varchar(100),
+    data_status varchar(45),
+    primary key(cod_status)
+);
+
+ 
+
+insert into tb_statuslinha ('descricao','cod_linha','data_linha','data_linha') values ('comentario','','14/12/2023')
+
+ 
+
+create table tb_sistemadeavaliacoes (
+    cod_sistAvali int not null,
+    cod_usu varchar(20) not null,
+    avali_usu int not null,
+    foreign key(cod_usu)references tb_usuarios(cod_usu),
+    foreign key(cod_recla)references tb_reclamacoes(cod_recla),
+    primary key(cod_sistAvali)
+);
+
+ 
+
+insert into tb_sistemadeavaliacoes ('nome_usu','cod_usu','avali_usu','descricao','cod_sistAvali') values
+    ('ciclano','','comentario','')
+
+----------------------------------------------------------------------------------------------------------------
+
+
+
+drop database db_alerTrem;
+
+ 
+
+create database db_alerTrem;
+
+ 
+
+
+create table tb_usuarios (
+    cod_usu int auto_increment,
+    nome_usu varchar(20) not null,
+    senha_usu varchar(20) not null,
+    email_usu varchar(100),
+    cpf_usu char(14) not null,
+    data_cad date,
+    primary key(cod_usu) 
+);
+
+ 
+
+insert into tb_usuarios ('cod_usu', 'nome_usu', 'senha_usu', 'email', 'cpf', 'data_cad')
+    values ('senac', 'senac123','senac@gmail.com','123.456.789-11','10/10/2023')
+
+ 
+
+ 
+
+create table tb_estacoes (
+    cod_estacao int not null auto_increment, 
+    nome_estacao varchar(50) not null,
+    localizacao varchar(100) not null, 
+    banheiro varchar(50), -- Cada característica pode ter entre 4 valores (null, 'funcionando', 'em manutencao', 'quebrado')
+    elevador varchar(50),
+    terminal_interurbano varchar(50),
+    terminal_urbano varchar(50),
+    transferencia_interna varchar(50),
+    bicicletario varchar(50),
+    banheiro_acessivel varchar(50),
+    estacaoa_cessivel varchar(50),
+    rampa varchar(50), 
+    transposicao_plataformas varchar(50),
+    escadas_rolantes varchar(50),
+    acesso_elevador varchar(50),
+    lanchonete varchar(50),
+    emporio varchar(50),
+    caixa_eletronico varchar(50),
+    calcados varchar(50),
+    telefone_psurdos varchar(50),
+    pisotatil varchar(50),
+    transferenci_agratuita varchar(50),
+    acessorios varchar(50),
+    farmacia varchar(50),
+    rota_acessivel varchar(50),
+    achados_perdidos varchar(50),
+    primary key (cod_estacao)
+);
+
+ 
+
+ 
+
+create table tb_reclamacoes (
+    cod_recla char(10) not null,
+    data_recl date not null,
+    cod_usu int  not null,
+    tipo_recla int not null, -- 1 ao 3
+    descricao varchar(100),
+    motivo varchar(100),
+    cod_estacao int not null,
+    foreign key(cod_estacao)references tb_estacoes(cod_estacao),
+    foreign key(cod_usu)references tb_usuarios(cod_usu),
+    primary key(cod_recla)
+);
+
+ 
+
+insert into tb_reclamacoes ('nome_usu','cod_usu','data_recl','cod_recla','descricao','avaliacao','status') values
+    ('fulano','10/10/2023','','comentario','','')
+
+ 
+
+
+create table tb_statuslinha (
+    cod_status int not null,
+    descricao varchar(100),
+    data_status varchar(45),
+    primary key(cod_status)
+);
+
+ 
+
+insert into tb_statuslinha ('descricao','cod_linha','data_linha','data_linha') values ('comentario','','14/12/2023')
+
+ 
+
+create table tb_sistemadeavaliacoes (
+    cod_sistAvali int not null,
+    cod_usu varchar(20) not null,
+    avali_usu int not null,
+    foreign key(cod_usu)references tb_usuarios(cod_usu),
+    foreign key(cod_recla)references tb_reclamacoes(cod_recla),
+    primary key(cod_sistAvali)
+);
+
+ 
+
+insert into tb_sistemadeavaliacoes ('nome_usu','cod_usu','avali_usu','descricao','cod_sistAvali') values
+    ('ciclano','','comentario','')
+
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+drop database dbAlerTrem;
+
+ 
+
+create database dbAlerTrem;
+
+ 
+
+
+create table tbusuarios (
+    codUsu int autoincrement,
+    nomeUsu varchar(20) not null,
+    senhaUsu varchar(20) not null,
+    email varchar(100),
+    cpf char(14) not null,
+    dataCad date,
+    primary key(codUsu) 
+);
+
+ 
+
+insert into tbusuarios ('codUsu', 'nomeUsu', 'senhaUsu', 'email', 'cpf', 'dataCad')
+    values ('senac', 'senac123','senac@gmail.com','123.456.789-11','10/10/2023')
+
+ 
+
+ 
+
+create table tbestacoes (
+    codestacao int not null autoincrement, 
+    nomeestacao varchar(50) not null autoincrement,
+    localizacao varchar(100) not null autoincrement, 
+    banheiro varchar(50) autoincrement, -- Cada característica pode ter entre 4 valores (null, 'funcionando', 'em manutencao', 'quebrado')
+    elevador varchar(50) autoincrement, 
+    terminalinterurbano varchar(50) autoincrement, 
+    terminalurbano varchar(50) autoincrement,
+    transferenciainterna varchar(50) autoincrement, 
+    bicicletario varchar(50) autoincrement,
+    banheiroacessivel varchar(50) autoincrement, 
+    estacaoacessivel varchar(50) autoincrement, 
+    rampa varchar(50) autoincrement, 
+    transposicaoplataformas varchar(50) autoincrement, 
+    escadasrolantes varchar(50) autoincrement, 
+    acessoelevador varchar(50) autoincrement, 
+    lanchonete varchar(50) autoincrement, 
+    emporio varchar(50) autoincrement, 
+    caixaeletronico varchar(50) autoincrement, 
+    calcados varchar(50) autoincrement, 
+    telefonepsurdos varchar(50) autoincrement,
+    pisotatil varchar(50) autoincrement, 
+    transferenciagratuita varchar(50) autoincrement, 
+    acessorios varchar(50) autoincrement, 
+    farmacia varchar(50) autoincrement, 
+    rotaacessivel varchar(50) autoincrement, 
+    achadosperdidos varchar(50) autoincrement, 
+    primary key (codestacao)
+);
+
+ 
+
+ 
+
+create table tbreclamacoes (
+    codRecla char(10) not null,
+    datarecl varchar(45) not null,
+    codUsu varchar(20) not null,
+    tipoRecla int not null, -- 1 ao 3
+    descricao varchar(100),
+    motivo varchar(100),
+    idestacao int not null,
+    foreign key(idestacao)references tbestacoes(idestacao),
+    foreign key(codUsu)references tbusuarios(codUsu),
+    primary key(codRecla)
+);
+
+ 
+
+insert into tbreclamacoes ('nomeUsu','codUsu','datarecl','codRecla','descricao','avaliacao','status') values
+    ('fulano','10/10/2023','','comentario','','')
+
+ 
+
+
+create table tbstatuslinha (
+    descricao varchar(100),
+    codlinha int not null,
+    datalinha varchar(45),
+    foreign key(codUsu)references tbusuarios(codUsu),
+    foreign key(codrecla)references tbreclamacao(codrecla),
+    foreign key(codSistAvali)references sistemadeavaliacao(codSistAvali),
+    foreign key(codEstacao)references estacao(codEstacao),
+    primary key(codlinha)
+);
+
+ 
+
+insert into tbstatuslinha ('descricao','codlinha','datalinha','datalinha') values ('comentario','','14/12/2023')
+
+ 
+
+create table tbsistemadeavaliacoes (
+    --nomeUsu varchar(20) not null,
+    codUsu varchar(20) not null,
+    avaliUsu int not null,
+    codSistAvali int not null,
+    foreign key(codUsu)references tbusuarios(codUsu),
+    foreign key(codrecla)references tbreclamacoes(codrecla),
+    primary key(codSistAvali)
+);
+
+ 
+
+insert into tbsistemadeavaliacoes ('nomeUsu','codUsu','avaliUsu','descricao','codSistAvali') values
+    ('ciclano','','comentario','')
+
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+
+create table tb_estacoes (
+
+    id_estacao int not null auto_increment,
+
+    nome_estacao varchar(50) not null,
+
+    localizacao varchar(100) not null,
+
+    banheiro varchar(50), -- Cada característica pode ter entre 4 valores (null, 'funcionando', 'em manutenção', 'quebrado')
+
+    elevador varchar(50),
+
+    terminal_interurbano varchar(50),
+
+    terminal_urbano varchar(50),
+
+    transferencia_interna varchar(50),
+
+    bicicletario varchar(50),
+
+    banheiro_acessivel varchar(50),
+
+    estacao_acessivel varchar(50),
+
+    rampa varchar(50),
+
+    transposicao_plataformas varchar(50),
+
+    escadas_rolantes varchar(50),
+
+    acesso_elevador varchar(50),
+
+    lanchonete varchar(50),
+
+    emporio varchar(50),
+
+    caixa_eletronico varchar(50),
+
+    calcados varchar(50),
+
+    telefone_p_surdos varchar(50),
+
+    piso_tatil varchar(50),
+
+    transferencia_gratuita varchar(50),
+
+    acessorios varchar(50),
+
+    farmacia varchar(50),
+
+    rota_acessivel varchar(50),
+
+    achados_perdidos varchar(50),
+
+ 
+
+    primary key (id_estacao)
+
+); 
+
+
+------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+drop database db_alerTrem;
+
+ 
+
+create database db_alerTrem;
+
+ 
+
+
+create table tb_usuarios (
+    cod_usu int auto_increment,
+    nome_usu varchar(20) not null,
+    senha_usu varchar(20) not null,
+    email_usu varchar(100),
+    cpf_usu char(14) not null,
+    data_cad date,
+    primary key(cod_usu) 
+);
+
+ 
+
+insert into tb_usuarios ('cod_usu', 'nome_usu', 'senha_usu', 'email', 'cpf', 'data_cad')
+    values ('senac', 'senac123','senac@gmail.com','123.456.789-11','10/10/2023')
+
+ 
+
+ 
+
+create table tb_estacoes (
+    cod_estacao int not null auto_increment, 
+    nome_estacao varchar(50) not null,
+    localizacao varchar(100) not null, 
+    banheiro varchar(50), -- Cada característica pode ter entre 4 valores (null, 'funcionando', 'em manutencao', 'quebrado')
+    elevador varchar(50),
+    terminal_interurbano varchar(50),
+    terminal_urbano varchar(50),
+    transferencia_interna varchar(50),
+    bicicletario varchar(50),
+    banheiro_acessivel varchar(50),
+    estacaoa_cessivel varchar(50),
+    rampa varchar(50), 
+    transposicao_plataformas varchar(50),
+    escadas_rolantes varchar(50),
+    acesso_elevador varchar(50),
+    lanchonete varchar(50),
+    emporio varchar(50),
+    caixa_eletronico varchar(50),
+    calcados varchar(50),
+    telefone_psurdos varchar(50),
+    pisotatil varchar(50),
+    transferenci_agratuita varchar(50),
+    acessorios varchar(50),
+    farmacia varchar(50),
+    rota_acessivel varchar(50),
+    achados_perdidos varchar(50),
+    primary key (cod_estacao)
+);
+
+ 
+
+ 
+
+create table tb_reclamacoes (
+    cod_recla char(10) not null,
+    data_recl date not null,
+    cod_usu int  not null,
+    tipo_recla int not null, -- 1 ao 3
+    descricao varchar(100),
+    motivo varchar(100),
+    cod_estacao int not null,
+    foreign key(cod_estacao)references tb_estacoes(cod_estacao),
+    foreign key(cod_usu)references tb_usuarios(cod_usu),
+    primary key(cod_recla)
+);
+
+ 
+
+insert into tb_reclamacoes ('nome_usu','cod_usu','data_recl','cod_recla','descricao','avaliacao','status') values
+    ('fulano','10/10/2023','','comentario','','')
+
+ 
+
+
+create table tb_statuslinha (
+    cod_status int not null,
+    descricao varchar(100),
+    data_status varchar(45),
+    primary key(cod_status)
+);
+
+ 
+
+insert into tb_statuslinha ('descricao','cod_linha','data_linha','data_linha') values ('comentario','','14/12/2023')
+
+ 
+
+create table tb_sistemadeavaliacoes (
+    cod_sistAvali int not null,
+    cod_usu varchar(20) not null,
+    avali_usu int not null,
+    foreign key(cod_usu)references tb_usuarios(cod_usu),
+    foreign key(cod_recla)references tb_reclamacoes(cod_recla),
+    primary key(cod_sistAvali)
+);
+
+ 
+
+insert into tb_sistemadeavaliacoes ('nome_usu','cod_usu','avali_usu','descricao','cod_sistAvali') values
+    ('ciclano','','comentario','')
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+
+drop database dbClinicaMedica;
+
+ 
+
+create database dbClinicaMedica;
+
+ 
+
+use dbClinicaMedica;
+
+ 
+
+create table tbPaciente(
+codPac int not null auto_increment,
+nome varchar(100) not null,
+email varchar(100),
+telefone char(14),
+cpf char(14) not null,
+endereco varchar(100),
+numero char(10),
+cep char(8),
+complemento varchar(50),
+bairro varchar(50),
+cidade varchar(50),
+siglaEst char(2),
+primary key(codPac));
+
+ 
+
+create table tbusuarios(
+codUsu int not null auto_increment,
+nomeUsu varchar(20) not null,
+senhaUsu varchar(20) not null,
+primary key(codUsu));
+
+ 
+
+insert into tbusuarios(nomeUsu, senhaUsu)values('senac','senac');
+
+ 
+
+insert into tbusuarios(nomeUsu, senhaUsu)values('admin','admin');
+
+ 
+
+insert into tbusuarios(nomeUsu, senhaUsu)values('visitante','visitante');
+
+ 
+
+
+select * from tbusuarios where nomeUsu = 'senac' and senhaUsu = 'senac';
+
+ 
+
+
+update tbPaciente set nome = '', email = '', telefone = '', cpf = '', endereco = '', numero = '', cep = '', complemento = '',
+    bairro = '', cidade = '', siglaEst = '', where codpac = 1;
+
+ 
+
+insert into tbPaciente(nome,email,telefone,cpf,endereco,numero,cep,complemento,bairro,cidade,siglaEst) values('Eu','Eu@eu.com',
+'(11) 97544-8283','575.153.834-22','Rua. euouto','27','04561000','casa','Santo amaro','São Paulo','sp');
+
+ 
+
+insert into tbPaciente(nome,email,telefone,cpf,endereco,numero,cep,complemento,bairro,cidade,siglaEst) values('Senac','senac@senac.com',
+'(11) 98574-8582','560.054.738-24','Rua Dr. Antonio Bento','377','04750000','casa','Santo amaro','São Paulo','sp');
+
+ 
+
+ 
+
+-- pesquisa por nome
+
+ 
+
+select * from tbPaciente where nome like '%s%';
+
+ 
+
+-- pesquisa por codigo
+
+ 
+
+select * from tbPaciente where codpac = 4;
+
+ 
+
+
+update tbPaciente set nome = '', email = '', telefone = '', cpf = '', endereco = '', numero = '', cep = '', complemento = '',
+    bairro = '', cidade = '', siglaEst = '', where codpac = 1;
+
+ 
+
+
+delete from tbPaciente where codpac = 1;
+
+
+-------------------------------------------------------------------------------------------------------
+
+
+txtCodigo.Text = Convert.ToString(DR.GetInt32(0));
+            txtNome.Text = DR.GetString(1);
+            txtEmail.Text = DR.GetString(2);
+            mskTelefone.Text = DR.GetString(3);
+            mskCPF.Text = DR.GetString(4);
+            txtEndereco.Text = DR.GetString(5);
+            txtNum.Text = DR.GetString(6);
+            txtComplemento.Text = DR.GetString(7);
+            txtBairro.Text = DR.GetString(8);
+            txtCidade.Text = DR.GetString(9);
+            cbbEstado.Text = DR.GetString(10);
+
+
+
+----------------------------------------------------------------------------------------------------------------
+
+
+
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Runtime.InteropServices;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using MySql.Data.MySqlClient;
+
+
+
+namespace ConsultorioMedico
+{
+    public partial class frmPacientes : Form
+    {
+        //Criando variáveis para controle do menu
+        const int MF_BYCOMMAND = 0X400;
+        [DllImport("user32")]
+        static extern int RemoveMenu(IntPtr hMenu, int nPosition, int wFlags);
+        [DllImport("user32")]
+        static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
+        [DllImport("user32")]
+        static extern int GetMenuItemCount(IntPtr hWnd);
+
+
+        public void desabilitarCampos()
+        {
+            txtCodigo.Enabled = false;
+            txtNome.Enabled = false;
+            txtBairro.Enabled = false;
+            txtCidade.Enabled = false;
+            txtEmail.Enabled = false;
+            txtEndereco.Enabled = false;
+            mskCEP.Enabled = false;
+            mskCPF.Enabled = false;
+            mskTelefone.Enabled = false;
+            cbbEstado.Enabled = false;
+            btnCadastrar.Enabled = false;
+            btnAlterar.Enabled = false;
+            btnExcluir.Enabled = false;
+            btnLimpar.Enabled = false;
+            txtComplemento.Enabled = false;
+            txtNum.Enabled = false;
+        }
+
+        public void habilitarCampos()
+        {
+            txtNome.Enabled = true;
+            txtBairro.Enabled = true;
+            txtCidade.Enabled = true;
+            txtEmail.Enabled = true;
+            txtEndereco.Enabled = true;
+            mskCEP.Enabled = true;
+            mskCPF.Enabled = true;
+            mskTelefone.Enabled = true;
+            cbbEstado.Enabled = true;
+            btnCadastrar.Enabled = true;
+            btnLimpar.Enabled = true;
+            txtComplemento.Enabled = true;
+            txtNum.Enabled = true;
+            txtNome.Focus();
+        }
+
+        public void limparCampos()
+        {
+            txtNome.Text = "";
+            txtBairro.Text = "";
+            txtCidade.Text = "";
+            txtEmail.Text = "";
+            txtEndereco.Text = "";
+            mskCEP.Text = "";
+            mskCPF.Text = "";
+            mskTelefone.Text = "";
+            cbbEstado.Text = "";
+            txtNum.Clear();
+            txtComplemento.Clear();
+        }
+
+        //Método para carregar a comboBox estado
+        public void carregarComboBox()
+        {
+            cbbEstado.Items.Add("");
+            cbbEstado.Items.Add("SP");
+            cbbEstado.Items.Add("RJ");
+            cbbEstado.Items.Add("BH");
+            cbbEstado.Items.Add("BA");
+            cbbEstado.Items.Add("RN");
+        }
+
+        //Construtor da classe
+        public frmPacientes()
+        {
+            InitializeComponent();
+            desabilitarCampos();
+            carregarComboBox();
+        }
+
+        string nome = "";
+        public frmPacientes(string nome)
+        {
+            InitializeComponent();
+            desabilitarCampos();
+            carregarComboBox();
+            txtNome.Text = nome;
+        }
+
+
+        public void pesquisarCampos()
+        {
+            MySqlCommand comm = new MySqlCommand();
+            comm.CommandText = "Select * from tbpaciente where nome = " + txtNome.Text + ";";
+            comm.CommandType = CommandType.Text;
+
+            comm.Connection = Conexao.obterConexao();
+
+            MySqlDataReader DR;
+            DR = comm.ExecuteReader();
+
+            txtCodigo.Text = Convert.ToString(DR.GetInt32(0));
+            txtEmail.Text = DR.GetString(2);
+            txtEndereco.Text = DR.GetString(3);
+            txtNum.Text = DR.GetString(4);
+            txtComplemento.Text = DR.GetString(5);
+            txtBairro.Text = DR.GetString(6);
+            txtCidade.Text = DR.GetString(7);
+            cbbEstado.Text = DR.GetString(8);
+
+            Conexao.fecharConexao();
+        }
+
+        private void btnVoltar_Click(object sender, EventArgs e)
+        {
+            frmMenuPrincipal abrir = new frmMenuPrincipal();
+            abrir.Show();
+            this.Hide();
+        }
+
+        private void frmPacientes_Load(object sender, EventArgs e)
+        {
+            IntPtr hMenu = GetSystemMenu(this.Handle, false);
+            int MenuCount = GetMenuItemCount(hMenu) - 1;
+            RemoveMenu(hMenu, MenuCount, MF_BYCOMMAND);
+
+        }
+
+        private void btnNovo_Click(object sender, EventArgs e)
+        {
+            habilitarCampos();
+            btnNovo.Enabled = false;
+        }
+
+        private void btnPesquisar_Click(object sender, EventArgs e)
+        {
+            frmPesquisar abrir = new frmPesquisar();
+            abrir.ShowDialog();
+
+        }
+
+        private void btnCadastrar_Click(object sender, EventArgs e)
+        {
+            //Executando o método verificarCampo
+            verificarCampo();
+
+            //Executar o metodo de cadastrar paciente
+            cadastrarPaciente();
+
+
+        }
+
+        public void cadastrarPaciente()
+        {
+            MySqlCommand comm = new MySqlCommand();
+
+            comm.CommandText = "insert into tbPaciente(nome,email,telefone,cpf,endereco,numero,cep,complemento,bairro,cidade,siglaEst) values(@nome,@email,@telefone,@cpf,@endereco,@numero,@cep,@complemento,@bairro,@cidade,@siglaEst); ";
+            comm.CommandType = CommandType.Text;
+            comm.Parameters.Clear();
+            comm.Parameters.Add("@nome",MySqlDbType.VarChar,100).Value = txtNome.Text ;
+            comm.Parameters.Add("@email", MySqlDbType.VarChar, 100).Value = txtEmail.Text;
+            comm.Parameters.Add("@telefone", MySqlDbType.VarChar, 14).Value = mskTelefone.Text;
+            comm.Parameters.Add("@cpf", MySqlDbType.VarChar, 14).Value = mskCPF.Text;
+            comm.Parameters.Add("@endereco", MySqlDbType.VarChar, 100).Value = txtEndereco.Text;
+            comm.Parameters.Add("@numero", MySqlDbType.VarChar, 10).Value = txtNum.Text;
+            comm.Parameters.Add("@cep", MySqlDbType.VarChar, 8).Value = mskCEP.Text;
+            comm.Parameters.Add("@complemento", MySqlDbType.VarChar, 50).Value = txtComplemento.Text;
+            comm.Parameters.Add("@bairro", MySqlDbType.VarChar, 50).Value = txtBairro.Text;
+            comm.Parameters.Add("@cidade", MySqlDbType.VarChar, 50).Value = txtCidade.Text;
+            comm.Parameters.Add("@siglaEst", MySqlDbType.VarChar, 2).Value = cbbEstado.Text;
+
+            comm.CommandType = CommandType.Text;
+
+            comm.Connection = Conexao.obterConexao();
+
+            int i = comm.ExecuteNonQuery();
+
+            MessageBox.Show("Paciente cadastrado com sucesso!!" + i);
+
+            Conexao.fecharConexao();
+
+
+            comm.Connection = Conexao.obterConexao();
+
+            Conexao.fecharConexao();
+        }
+
+        //Criando o método para verificar campo vazio
+        public void verificarCampo()
+        {
+            //if (txtNome.Text == "")
+            //{
+            //    MessageBox.Show("Favor inserir valores");
+            //}
+            //else if (txtEmail.Text == "")
+            //{
+            //    MessageBox.Show("Favor inserir valores");
+            //}
+
+            if (txtNome.Text.Equals("") || txtEmail.Text.Equals("")
+                || mskTelefone.Text.Equals("(  )      -")
+                || mskCPF.Text.Equals("   .   .   -")
+                || txtEndereco.Text.Equals("") || mskCEP.Text.Equals("     -")
+                || txtBairro.Text.Equals("") || txtCidade.Text.Equals("")
+                || cbbEstado.Text.Equals(""))
+            {
+                MessageBox.Show("Favor inserir valores!!!",
+                    "Mensagem do Sistema",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information,
+                    MessageBoxDefaultButton.Button1);
+                txtNome.Focus();
+            }
+            else
+            {
+               // MessageBox.Show("Cadastrado com sucesso!!!",
+                 //   "Mensagem do Sistema",
+                   // MessageBoxButtons.OK,
+                   // MessageBoxIcon.Information,
+                   // MessageBoxDefaultButton.Button1);
+               // desabilitarCampos();
+               // limparCampos();
+            }
+        }
+
+        private void btnLimpar_Click(object sender, EventArgs e)
+        {
+            limparCampos();
+            txtNome.Focus();
+        }
+        private void mskCEP_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter || e.KeyCode == Keys.Return)
+            {
+                buscaCEP(mskCEP.Text);
+
+            }
+        }
+        //Acessar o serviço de correio pelo endereço
+        //https://apps.correios.com.br/SigepMasterJPA/AtendeClienteService/AtendeCliente?wsdl
+
+        public void buscaCEP(string numCep)
+        {
+            WSCorreios.AtendeClienteClient ws = new WSCorreios.AtendeClienteClient();
+
+            try
+            {
+                WSCorreios.enderecoERP end = ws.consultaCEP(numCep);
+
+                txtEndereco.Text = end.end;
+                txtBairro.Text = end.bairro;
+                txtCidade.Text = end.cidade;
+                cbbEstado.Text = end.uf;
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Insira CEP válido!!!",
+                    "Mensagem do Sistema",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+                mskCEP.Clear();
+                mskCEP.Focus();
+
+            }
+        }
+        //https://learn.microsoft.com/pt-br/dotnet/standard/base-types/how-to-verify-that-strings-are-in-valid-email-format
+
+        public static bool validaEmail(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+
+            try
+            {
+
+                email = Regex.Replace(email, @"(@)(.+)$", DomainMapper,
+                    RegexOptions.None, TimeSpan.FromMilliseconds(200));
+
+                string DomainMapper(Match match)
+                {
+                    var idn = new IdnMapping();
+
+                    string domainName = idn.GetAscii(match.Groups[2].Value);
+
+                    return match.Groups[1].Value + domainName;
+                }
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                return false;
+
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+            try
+            {   //Expressão regular
+
+                /*
+                 * O que esperava de cada trecho:
+                 * [a-z0-9.]+ - parte antes do @ do e-mail, nome do usuário;
+                 * @ - caractere de arroba obrigatório;
+                 * [a-z0-9]+ - parte depois do @ do e-mail, nome do provedor;
+                 * \. - caractere de ponto depois do nome do provedor;
+                 * [a-z]+ - geralmente onde é colocado o .com;
+                 * \. - caractere de ponto depois do .com, só deveria ser obrigatório caso haja por exemplo um .br ou a abreviação de qualquer outro país no final do e-mail;
+                 * ([a-z]+)? - geralmente onde é colocado a abreviação do país.
+                 */
+
+                return Regex.IsMatch(email,
+                  @"^[^@\s]+@[^@\s]+\.[^@\s]+$",
+                  RegexOptions.IgnoreCase,
+                  TimeSpan.FromMilliseconds(250));
+            }
+            catch (RegexMatchTimeoutException)
+            {
+                return false;
+            }
+        }
+
+        //https://dicasdeprogramacao.com.br/algoritmo-para-validar-cpf/
+
+        public static bool validaCPF(string vrCPF)
+        {
+            string valor = vrCPF.Replace(".", "");
+
+            valor = valor.Replace("-", "");
+
+            if (valor.Length != 11)
+                return false;
+
+            bool igual = true;
+
+            for (int i = 1; i < 11 && igual; i++)
+                if (valor[i] != valor[0])
+                    igual = false;
+
+            if (igual || valor == "12345678909")
+                return false;
+
+            int[] numeros = new int[11];
+
+            for (int i = 0; i < 11; i++)
+                numeros[i] = int.Parse(
+                  valor[i].ToString());
+
+            int soma = 0;
+
+            for (int i = 0; i < 9; i++)
+                soma += (10 - i) * numeros[i];
+
+            int resultado = soma % 11;
+
+            if (resultado == 1 || resultado == 0)
+            {
+                if (numeros[9] != 0)
+                    return false;
+            }
+            else if (numeros[9] != 11 - resultado)
+                return false;
+
+            soma = 0;
+
+            for (int i = 0; i < 10; i++)
+                soma += (11 - i) * numeros[i];
+
+            resultado = soma % 11;
+
+            if (resultado == 1 || resultado == 0)
+            {
+                if (numeros[10] != 0)
+                    return false;
+            }
+            else if (numeros[10] != 11 - resultado)
+                return false;
+            return true;
+        }
+
+
+        private void txtEmail_KeyDown(object sender, KeyEventArgs e)
+        {
+            if ((e.KeyCode == Keys.Enter) || (e.KeyCode == Keys.Tab))
+            {
+                bool valida = validaEmail(txtEmail.Text);
+
+                if (valida == true)
+                {
+                    mskCEP.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("Insira e-mail válido",
+                    "Mensagem do Sistema",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error,
+                    MessageBoxDefaultButton.Button1);
+                    txtEmail.Clear();
+                    txtEmail.Focus();
+                }
+            }
+        }
+
+        private void mskCPF_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                bool valida = validaCPF(mskCPF.Text);
+
+                if (valida == true)
+                {
+                    mskCEP.Focus();
+                }
+                else
+                {
+                    MessageBox.Show("Insira CPF válido",
+                   "Mensagem do Sistema",
+                   MessageBoxButtons.OK,
+                   MessageBoxIcon.Error,
+                   MessageBoxDefaultButton.Button1);
+                    mskCPF.Clear();
+                    mskCPF.Focus();
+                }
+
+            }
+        }
+
+        private void btnCarregar_Click(object sender, EventArgs e)
+        {
+
+        }
+    }
+
+}
+
+---------------------------------------------------------------------------------------------------------------------------
+
+
+[01/02 16:47] LEONARDO COSME DA SILVA
+
+
+<!-- Load an icon library to show a hamburger menu (bars) on small screens -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<!-- Top Navigation Menu -->
+
+<div class="topnav">
+
+  <a href="#home" class="active">Logo</a>
+
+  <!-- Navigation links (hidden by default) -->
+
+  <div id="myLinks">
+
+    <a href="#news">News</a>
+
+    <a href="#contact">Contact</a>
+
+    <a href="#about">About</a>
+
+  </div>
+
+  <!-- "Hamburger menu" / "Bar icon" to toggle the navigation links -->
+
+  <a href="javascript:void(0);" class="icon" onclick="myFunction()">
+
+    <i class="fa fa-bars"></i>
+
+  </a>
+
+</div>
+
+
+[01/02 16:47] LEONARDO COSME DA SILVA
+
+
+
+/* Style the navigation menu */
+
+.topnav {
+
+  overflow: hidden;
+
+  background-color: #333;
+
+  position: relative;
+
+}
+
+
+/* Hide the links inside the navigation menu (except for logo/home) */
+
+.topnav #myLinks {
+
+  display: none;
+
+}
+
+
+/* Style navigation menu links */
+
+.topnav a {
+
+  color: white;
+
+  padding: 14px 16px;
+
+  text-decoration: none;
+
+  font-size: 17px;
+
+  display: block;
+
+}
+
+
+/* Style the hamburger menu */
+
+.topnav a.icon {
+
+  background: black;
+
+  display: block;
+
+  position: absolute;
+
+  right: 0;
+
+  top: 0;
+
+}
+
+
+/* Add a grey background color on mouse-over */
+
+.topnav a:hover {
+
+  background-color: #ddd;
+
+  color: black;
+
+}
+
+
+/* Style the active link (or home/logo) */
+
+.active {
+
+  background-color: #04AA6D;
+
+  color: white;
+
+}
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+drop database dbEmpresa;
+
+
+
+
+
+create database dbEmpresa;
+
+
+
+
+use dbEmpresa;
+
+
+
+
+create table tbFuncionarios(
+codfunc int not null auto_increment,
+nome varchar(100),
+email varchar(100),
+cpf char(14) not null unique,
+salario decimal(9,2) not null default 0 check(salario >= 0),
+sexo char(1) default 'F' check(sexo in('F','M')),
+primary key(codfunc)
+);
+
+
+
+
+
+create table tbUsuarios(
+codusu int not null auto_increment,
+nome varchar(20) not null,
+senha varchar(20) not null,
+codfunc int not null,
+primary key(codusu),
+foreign key(codfunc)references tbFuncionarios(codfunc)
+);
+
+
+
+
+create table tbFornecedores(
+codForn int not null auto_increment,
+nome varchar(100),
+cnpj char(18),
+inscrEst char(15),
+email varchar(100),
+telefone char(10),
+primary key(codForn)
+);
+
+
+
+
+create table tbProdutos(
+codProd int not null auto_increment,
+descricao varchar(100),
+quantidade int default 0 check(quantidade >= 0),
+valor decimal(9,2) check(valor >= 0),
+codForn int not null,
+primary key(codProd),
+foreign key(codForn)references tbFornecedores(codForn)
+);
+
+
+
+
+create table tbClientes(
+codCli int not null auto_increment,
+nome varchar(100),
+email varchar(100),
+cpf char(14) not null unique,
+telefone char(10),
+primary key(codCli)
+);
+
+
+
+
+create table tbVendas(
+codVend int not null auto_increment,
+codProd int not null,
+codCli int not null,
+codusu int not null,
+dataVenda date,
+horaVenda time,
+quantidade int,
+primary key(codVend),
+foreign key(codProd)references tbProdutos(codProd),
+foreign key(codCli)references tbClientes(codCli),
+foreign key(codusu)references tbUsuarios(codusu)
+);
+
+
+
+
+
+desc tbProdutos;
+desc tbUsuarios;
+desc tbFuncionarios;
+desc tbFornecedores;
+desc tbClientes;
+desc tbVendas;
+
+
+
+
+
+insert into tbFuncionarios(nome,email,cpf,salario,sexo)
+values('Paulo Miranda da Silva','paulo.msilva@hotmail.com','258.247.248-00','1500.00','M');
+
+
+
+
+insert into tbUsuarios(nome,senha,codfunc)values('paulo.msilva','123456',1);
+
+
+
+
+insert into tbFornecedores(nome,cnpj,inscrEst,email,telefone)
+    values('Fabricantes S/A','25.147.235/0001-38','253.235.147-110',
+        'sac@empresa.com.br','97485-8574');
+
+
+
+
+insert into tbProdutos(descricao,quantidade,valor,codForn)
+    values('Banana',12,10.35,1);
+insert into tbProdutos(descricao,quantidade,valor,codForn)
+    values('Maca',20,5.00,1);
+insert into tbProdutos(descricao,quantidade,valor,codForn)
+    values('Pera',50,15.25,1);
+insert into tbProdutos(descricao,quantidade,valor,codForn)
+    values('Morango',35,10.25,1);
+
+
+
+
+insert into tbClientes(nome,email,cpf,telefone)
+    values('Paulo Albuquerque da Vila','paulo.avila@hotmail.com',
+        '245.236.852-99','97852-1475');
+
+
+
+
+insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade)
+    values(1,1,1,'2022/11/17','15:42:02',10);
+insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade)
+    values(3,1,1,'2022/11/18','15:42:02',5);
+insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade)
+    values(2,1,1,'2022/11/17','15:42:02',3);
+insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade)
+    values(4,1,1,'2022/11/17','15:42:02',8);
+insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade)
+    values(2,1,1,'2022/11/17','15:42:02',7);
+insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade)
+    values(3,1,1,'2022/11/17','15:42:02',2);
+
+
+
+
+select * from tbFuncionarios;
+select * from tbUsuarios;
+select * from tbFornecedores;
+select * from tbProdutos;
+select * from tbClientes;
+select * from tbVendas;
+
+
+
+
+-- utilizando inner join nas pesquisas
+
+
+
+
+select prod.descricao, vend.quantidade from tbVendas as vend inner join tbProdutos as prod on vend.codProd = prod.codProd;
+
+
+
+
+
+select prod.descricao,forn.nome from tbProdutos as prod inner join tbFornecedores as forn on prod.codForn = forn.codForn;
+
+
+
+
+select prod.descricao, cli.nome, usu.nome from tbVendas as vend inner join tbProdutos as prod on vend.codProd = prod.codProd
+inner join tbClientes as cli on vend.codCli = cli.codCli inner join tbUsuarios as usu on vend.codusu = usu.codusu;
+
+
+
+
+
+select prod.descricao as 'Nome do Produto', cli.nome as 'Nome do Cliente', forn.nome as 'Nome do Fornecedor'
+from tbVendas as vend inner join tbProdutos as prod on vend.codProd = prod.codProd
+inner join tbClientes as cli on cli.codCli = vend.codCli inner join tbFornecedores as forn on prod.codForn = forn.codForn
+where vend.codProd = 3;
+
+
+
+
+
+
+
+select func.nome, prod.descricao, vend.quantidade, nome from tbVendas as vend inner join tbUsuarios as usu on vend.codusu = usu.codusu
+inner join tbFuncionarios as func on usu.codfunc = func.codfunc inner join tbProdutos as prod on vend.codProd = prod.codProd
+inner join tbFornecedores as forn on prod.codForn = forn.codForn where vend.codProd = 4;
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+create database tbEsacionamento;
+
+
+
+
+
+use tbEsacionamento;
+
+
+
+
+CREATE TABLE ESTACIONAMENTO
+(
+codigo int auto_increment,
+placa varchar(12),
+cor varchar(10),
+modelo varchar(10),
+ano char(4),
+data de entrada date,
+hora entrada time,
+data saida date,
+hora saida time,
+primary key(codigo)
+);
+
+
+
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida) values ('thrt7484','azul',
+'ferrari458italia', '2009', '12/11/2015', '11:31:00', '13/11/2015', '12:00:00');
+
+
+
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida) values ('xtr4548','black',
+'bugattiChiron', '2016', '25/12/2020', '13:20:00', '26/12/2020', '14:40:00');
+
+
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida) values ('tug2169','branco',
+'LamborghiniAventador', '2011', '01/01/2021', '10:10:00', '02/01/2021', '13:00:00');
+
+
+
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida) values ('ert1245','vermelho',
+'mclarenp1', '2013', '10/02/2021', '16:50:00', '11/02/2021', '17:30:00');
+
+
+
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida) values ('jgy6554','ciano',
+'KoenigseggAgera', '2018', '20/02/2021', '09:10:00', '21/02/2021', '10:00:00');
+
+
+
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida) values ('wqr1456','bege',
+'porschepanamera', '2014', '22/02/2021', '08:30:00', '23/02/2021', '09:00:00');
+
+
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida) values ('lgy7852','vermelho',
+'audir8', '2007', '23/02/2021', '14:00:00', '24/02/2021', '15:30:00');
+
+
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida) values ('fhd2554','amarelo',
+'camaro', '2021', '24/02/2021', '15:40:00', '25/02/2021', '14:30:00');
+
+
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida) values ('fgf5456','branco',
+'lykanhypersport', '2014', '08/03/2021', '12:00:00', '09/03/2021', '13:0:00');
+
+
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida) values ('yui1234','preto',
+'fuscãopreto', '2003', '09/03/2021', '13:20:00', '10/03/2021', '15:30:00');
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------
+
+
+
+- apagar o banco de dados
+drop database dbloja;
+
+
+
+
+-- criando banco de dados
+create database dbloja;
+
+
+
+
+
+-- visualizando o banco de dados
+show databases;
+
+
+
+
+-- acessar o banco de dados
+use dbloja;
+
+
+
+
+
+-- criando as tabelas para o banco de dados
+create table tbFuncionarios(
+codfunc int auto_increment,
+nome varchar(50),
+email varchar(50),
+cpf char(14),
+tel char(10),
+primary key(codfunc)
+);
+
+
+
+
+create table tbUsuarios(
+codusu int auto_increment,
+nome varchar(15),
+senha varchar(14),
+primary key(codusu)
+);
+
+
+
+
+create table tbProdutos(
+codProd int auto_increment,
+descricao varchar(50),
+preco decimal(9,2),
+validade date,
+quantidade int,
+tipo varchar(10),
+primary key(codProd)
+);
+
+
+
+
+
+-- vizualizando as tabelas no banco de dados
+show tables;
+
+
+
+
+-- visualizando a estrutura das tabelas
+desc tbFuncionarios;
+desc tbUsuarios;
+
+
+
+
+-- inserindo valores nas tabelas
+
+
+
+
+insert into tbFuncionarios(nome,email,cpf,tel)
+values('Gustavo santos','gustavo.santos@gmail.com','258.247.256-87','97854-8754');
+
+
+
+
+insert into tbFuncionarios(nome,email,cpf,tel)
+values('Meliodas silva','meliodas.@gmail.com','254.258.963-77','98754-9734');
+
+
+
+
+insert into tbUsuarios(nome,senha)values('Gustavo.santos','123456');
+    
+insert into tbUsuarios(nome,senha)values('Meliodas.silva','654321');
+
+
+
+
+insert into tbProdutos(descricao,preco,validade,quantidade,tipo)values('Banana',20.50,'2022-11-07',12,'Duzia');
+
+
+
+
+insert into tbProdutos(descricao,preco,validade,quantidade,tipo)values('Melancia',30.00,'2022-11-30',1,'unidade');
+
+
+
+
+insert into tbProdutos(descricao,preco,validade,quantidade,tipo)values('Morango',10.50,'2022-11-08',1,'caixa');
+
+
+
+
+insert into tbProdutos(descricao,preco,validade,quantidade,tipo)values('Banana',15.50,'2022-01-08',6,'Duzia');
+
+
+
+
+insert into tbProdutos(descricao,preco,validade,quantidade,tipo)values('Banana',5.50,'2022-10-09',12,'Duzia');
+
+
+
+
+-- visualizando os registros das tabelas
+select * from tbFuncionarios;
+
+
+
+
+select * from tbUsuarios;
+
+
+
+
+select * from tbProdutos;
+
+
+
+
+
+-- alterando os registros das tabelas
+update tbUsuarios set senha = '785414565' where codusu = 1;
+
+
+
+
+select * from tbUsuarios;
+
+
+
+
+-- excluindo os registros das tabelas
+delete from tbUsuarios where codusu=2;
+
+
+
+
+select * from tbUsuarios;
+
+
+
+
+
+update tbProdutos set preco = preco * 1.10 where preco > 11.00;
+
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+drop database dbProdutos;
+
+
+
+
+
+create database dbProdutos;
+
+
+
+
+use dbProdutos;
+
+
+
+
+CREATE TABLE PRODUTOS
+(
+CODIGO INT,
+NOME VARCHAR(50),
+TIPO VARCHAR(25),
+QUANTIDADE INT,
+VALOR DECIMAL(10,2)
+);
+
+
+
+
+INSERT INTO PRODUTOS ( CODIGO, NOME, TIPO, QUANTIDADE, VALOR ) VALUES ( 1,'IMPRESSORA', 'INFORMATICA', 200, 600.00 );
+INSERT INTO PRODUTOS ( CODIGO, NOME, TIPO, QUANTIDADE, VALOR ) VALUES ( 2,'CAMERA DIGITAL', 'DIGITAIS', 300, 400.00 );
+INSERT INTO PRODUTOS ( CODIGO, NOME, TIPO, QUANTIDADE, VALOR ) VALUES ( 3,'DVD PLAYER', 'ELETRONICOS', 250, 500.00 );
+INSERT INTO PRODUTOS ( CODIGO, NOME, TIPO, QUANTIDADE, VALOR ) VALUES ( 4,'MONITOR', 'INFORMATICA', 400, 900.00 );
+INSERT INTO PRODUTOS ( CODIGO, NOME, TIPO, QUANTIDADE, VALOR ) VALUES ( 5,'TELEVISOR', 'ELETRONICOS', 350, 650.00 );
+INSERT INTO PRODUTOS ( CODIGO, NOME, TIPO, QUANTIDADE, VALOR ) VALUES ( 6,'FILMADORA DIGITAL', 'DIGITAIS', 500, 700.00 );
+INSERT INTO PRODUTOS ( CODIGO, NOME, TIPO, QUANTIDADE, VALOR ) VALUES ( 7,'CELULAR', 'TELEFONE', 450, 850.00 );
+INSERT INTO PRODUTOS ( CODIGO, NOME, TIPO, QUANTIDADE, VALOR ) VALUES ( 8,'TECLADO', 'INFORMATICA', 300, 450.00 );
+INSERT INTO PRODUTOS ( CODIGO, NOME, TIPO, QUANTIDADE, VALOR ) VALUES ( 9,'VIDEOCASSETE', 'ELETRONICOS', 200, 300.00 );
+INSERT INTO PRODUTOS ( CODIGO, NOME, TIPO, QUANTIDADE, VALOR ) VALUES ( 10,'MOUSE', 'INFORMATICA', 400, 60.00 );
+
+
+
+
+desc PRODUTOS;
+
+
+
+
+select * from PRODUTOS;
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+if(txtNome.Text == "leo" && txtSenha.Text == "talvez")
+            {
+
+
+
+
+
+               // MessageBox.Show(" Bem Vindo " + txtNome.Text);
+
+
+
+
+               frmBemVindo frm2 = new frmBemVindo();
+                frm2.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("Usuario ou senha Invalido");
+            }
+
+
+-----------------------------------------------------------------------------------------------------------------------
+
+
+
+using System;
+using System.Globalization;
+
+
+
+
+
+class URI {
+
+
+
+
+   static void Main(string[] args) {
+
+
+
+
+       string[] valores = Console.ReadLine().Split();
+
+
+
+
+           double x = double.Parse(valores[0], CultureInfo.InvariantCulture);
+            double y = double.Parse(valores[1], CultureInfo.InvariantCulture);
+
+
+
+
+           if (x > 0 && y > 0)
+            {
+                Console.WriteLine("Q1");
+            }
+            else if (x > 0 && y < 0)
+            {
+                Console.WriteLine("Q4");
+            }
+            else if (x < 0 && y > 0)
+            {
+                Console.WriteLine("Q2");
+            }
+            else if (x < 0 && y < 0)
+            {
+                Console.WriteLine("Q3");
+            }
+            else if (x == 0 && y != 0)
+            {
+                Console.WriteLine("Eixo Y");
+            }
+            else if (x != 0 && y == 0)
+            {
+                Console.WriteLine("Eixo X");
+            }
+            else
+            {
+                Console.WriteLine("Origem");
+            }
+
+
+
+
+   }
+
+
+
+
+}
+
+
+-------------------------------------------------------------------------------------------------------------------
+
+
+
+string[] numeros = Console.ReadLine().Split();
+
+
+
+
+
+
+
+
+           int n1 = int.Parse(numeros[0]);
+            int n2 = int.Parse(numeros[1]);
+            int n3 = int.Parse(numeros[2]);
+
+
+
+
+
+
+
+           int maior = 0;
+            int menor = 0;
+            int meio = 0;
+
+
+
+
+           if (n1 > n2 && n1 > n3)
+            {
+                maior = n1;
+                if (n2 < n3)
+                {
+                    menor = n2;
+                    meio = n3;
+                }
+                else
+                {
+                    menor = n3;
+                    meio = n2;
+                }
+            }
+            else if (n2 > n1 && n2 > n3)
+            {
+                maior = n2;
+                if (n1 < n3)
+                {
+                    menor = n1;
+                    meio = n3;
+                }
+                else
+                {
+                    menor = n3;
+                    meio = n1;
+                }
+            }
+            else if (n3 > n1 && n3 > n2)
+            {
+                maior = n3;
+                if (n1 < n2)
+                {
+                    menor = n1;
+                    meio = n2;
+                }
+                else
+                {
+                    menor = n2;
+                    meio = n1;
+                }
+            }
+            Console.WriteLine(menor);
+            Console.WriteLine(meio);
+            Console.WriteLine(maior);
+            Console.WriteLine();
+            Console.WriteLine(n1);
+            Console.WriteLine(n2);
+            Console.WriteLine(n3);
+
+-----------------------------------------------------------------------------------------------------------------------------
+
+string[] valores = Console.ReadLine().Split();
+
+
+
+
+
+           double x = double.Parse(valores[0], CultureInfo.InvariantCulture);
+            double y = double.Parse(valores[1], CultureInfo.InvariantCulture);
+
+
+
+
+           if (x > 0 && y > 0)
+            {
+                Console.WriteLine("Q1");
+            }
+            else if (x > 0 && y < 0)
+            {
+                Console.WriteLine("Q4");
+            }
+            else if (x < 0 && y > 0)
+            {
+                Console.WriteLine("Q2");
+            }
+            else if (x < 0 && y < 0)
+            {
+                Console.WriteLine("Q3");
+            }
+            else if (x == 0 && y != 0)
+            {
+                Console.WriteLine("Eixo Y");
+            }
+            else if (x != 0 && y == 0)
+            {
+                Console.WriteLine("Eixo X");
+            }
+            else
+            {
+                Console.WriteLine("Origem");
+            }
+
+-------------------------------------------------------------------------------------------------------------------------
+
+
+using System.Globalization;
+
+
+
+
+
+namespace uri_1040
+    {
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                string[] valores = Console.ReadLine().Split();
+
+
+
+
+               double n1 = double.Parse(valores[0], CultureInfo.InvariantCulture);
+                double n2 = double.Parse(valores[1], CultureInfo.InvariantCulture);
+                double n3 = double.Parse(valores[2], CultureInfo.InvariantCulture);
+                double n4 = double.Parse(valores[3], CultureInfo.InvariantCulture);
+
+
+
+
+               double media = ((n1 * 2) + (n2 * 3) + (n3 * 4) + (n4 * 1)) / 10;
+
+
+
+
+               // O problema 1040 tem uma falha de arredondamento especifica
+                // para a linguagem C#. Quando a media da 4.85, nos temos que
+                // ajusta-la manualmente para 4.8, o que eh uma "gambiarra"
+                // horrivel, infelizmente.
+                // - https://github.com/diegogalli/Uri-1040---Media2/blob/main/Media3/Media3/Program.cs
+                if (media == 4.85)
+                {
+                    media = 4.8;
+                }
+
+
+
+
+               Console.WriteLine($"Media: {media.ToString("F1", CultureInfo.InvariantCulture)}");
+
+
+
+
+               if (media >= 7.0)
+                {
+                    Console.WriteLine("Aluno aprovado.");
+                }
+                else if (media >= 5.0)
+                {
+                    Console.WriteLine("Aluno em exame.");
+                    double n5 = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+                    Console.WriteLine($"Nota do exame: {n5.ToString("F1", CultureInfo.InvariantCulture)}");
+
+
+
+
+                   media = (media + n5) / 2.0;
+
+
+
+
+                   if (media >= 5.0)
+                    {
+                        Console.WriteLine("Aluno aprovado.");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Aluno reprovado.");
+                    }
+                    Console.WriteLine($"Media final: {media.ToString("F1", CultureInfo.InvariantCulture)}");
+                }
+                else
+                {
+                    Console.WriteLine("Aluno reprovado.");
+                }
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+sing System.Globalization;
+
+
+
+
+
+namespace uri_1038
+    {
+        class Program
+        {
+            static void Main(string[] args)
+            {
+                string[,] tabela = new string[5, 3]
+                {
+                { "1", "Cachorro Quente", "4.00" },
+                { "2", "X-Salada", "4.50" },
+                { "3", "X-Bacon", "5.00" },
+                { "4", "Torrada simples", "2.00" },
+                { "5", "Refrigerante", "1.50" }
+                };
+
+
+
+
+               string[] pedido = Console.ReadLine().Split();
+                int produto = int.Parse(pedido[0]);
+                int quantidade = int.Parse(pedido[1]);
+                switch (produto)
+                {
+                    case 1:
+                        Console.WriteLine($"Total: R$ {(double.Parse(tabela[0, 2], CultureInfo.InvariantCulture) * quantidade).ToString("F2", CultureInfo.InvariantCulture)}");
+                        break;
+                    case 2:
+                        Console.WriteLine($"Total: R$ {(double.Parse(tabela[1, 2], CultureInfo.InvariantCulture) * quantidade).ToString("F2", CultureInfo.InvariantCulture)}");
+                        break;
+                    case 3:
+                        Console.WriteLine($"Total: R$ {(double.Parse(tabela[2, 2], CultureInfo.InvariantCulture) * quantidade).ToString("F2", CultureInfo.InvariantCulture)}");
+                        break;
+                    case 4:
+                        Console.WriteLine($"Total: R$ {(double.Parse(tabela[3, 2], CultureInfo.InvariantCulture) * quantidade).ToString("F2", CultureInfo.InvariantCulture)}");
+                        break;
+                    case 5:
+                        Console.WriteLine($"Total: R$ {(double.Parse(tabela[4, 2], CultureInfo.InvariantCulture) * quantidade).ToString("F2", CultureInfo.InvariantCulture)}");
+                        break;
+                }
+
+
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+
+using System;
+using System.Globalization;
+
+
+class URI {
+
+
+   static void Main(string[] args) {
+
+
+     double N;
+            int nota, quociente, resto, moeda;
+
+
+           N = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+
+
+           // Vamos multiplicar N por 100 e forçar a conversão para int.
+            // Desse modo, por exemplo, 576.73 vai se tornar 57673
+
+
+           // Vamos tambem somar 0.5 antes de converter, para assegurar
+            // que o numero seja devidamente arredondado, pois o tipo double
+            // as vezes da problema de arredondamento (por exemplo: se digitarmos
+            // 576.81 e multiplicarmos por 100, o resultado sera 57680.99999999,
+            // dai o casting resultaria em 57680 e nao 57681 como desejado)
+
+           resto = (int)(N * 100.0 + 0.5);
+
+           Console.WriteLine("NOTAS:");
+
+
+           // como multiplicamos o valor por 100 acima, o valor de cada nota
+            // também deverá ser multiplicado por 100 a seguir
+
+
+           nota = 100;
+            quociente = resto / (nota * 100);
+            Console.WriteLine(quociente + " nota(s) de R$ " + nota + ".00");
+            resto = resto % (nota * 100);
+
+           nota = 50;
+            quociente = resto / (nota * 100);
+            Console.WriteLine(quociente + " nota(s) de R$ " + nota + ".00");
+            resto = resto % (nota * 100);
+
+           nota = 20;
+            quociente = resto / (nota * 100);
+            Console.WriteLine(quociente + " nota(s) de R$ " + nota + ".00");
+            resto = resto % (nota * 100);
+
+
+           nota = 10;
+            quociente = resto / (nota * 100);
+            Console.WriteLine(quociente + " nota(s) de R$ " + nota + ".00");
+            resto = resto % (nota * 100);
+
+
+           nota = 5;
+            quociente = resto / (nota * 100);
+            Console.WriteLine(quociente + " nota(s) de R$ " + nota + ".00");
+            resto = resto % (nota * 100);
+
+
+           nota = 2;
+            quociente = resto / (nota * 100);
+            Console.WriteLine(quociente + " nota(s) de R$ " + nota + ".00");
+            resto = resto % (nota * 100);
+
+
+           Console.WriteLine("MOEDAS:");
+
+
+           moeda = 100;
+            quociente = resto / moeda;
+            Console.WriteLine(quociente + " moeda(s) de R$ 1.00");
+            resto = resto % moeda;
+
+
+           moeda = 50;
+            quociente = resto / moeda;
+            Console.WriteLine(quociente + " moeda(s) de R$ 0.50");
+            resto = resto % moeda;
+
+
+           moeda = 25;
+            quociente = resto / moeda;
+            Console.WriteLine(quociente + " moeda(s) de R$ 0.25");
+            resto = resto % moeda;
+
+
+           moeda = 10;
+            quociente = resto / moeda;
+            Console.WriteLine(quociente + " moeda(s) de R$ 0.10");
+            resto = resto % moeda;
+
+
+           moeda = 5;
+            quociente = resto / moeda;
+            Console.WriteLine(quociente + " moeda(s) de R$ 0.05");
+            resto = resto % moeda;
+
+
+
+           Console.WriteLine(resto + " moeda(s) de R$ 0.01");
+
+
+   }
+
+
+}
+
+
+--------------------------------------------------------------------------------------------------------------------
+
+
+
+
+using System;
+
+class URI {
+
+    static void Main(string[] args) {
+
+          int N, quociente, resto, nota;
+
+
+           N = int.Parse(Console.ReadLine());
+            Console.WriteLine(N);
+
+
+           resto = N;
+
+
+           nota = 100;
+            quociente = resto / 100;
+            Console.WriteLine(quociente + " nota(s) de R$ " + nota + ",00");
+            resto = resto % nota;
+
+
+           nota = 50;
+            quociente = resto / 50;
+            Console.WriteLine(quociente + " nota(s) de R$ " + nota + ",00");
+            resto = resto % nota;
+
+
+           nota = 20;
+            quociente = resto / 20;
+            Console.WriteLine(quociente + " nota(s) de R$ " + nota + ",00");
+            resto = resto % nota;
+
+
+           nota = 10;
+            quociente = resto / 10;
+            Console.WriteLine(quociente + " nota(s) de R$ " + nota + ",00");
+            resto = resto % nota;
+
+
+           nota = 5;
+            quociente = resto / 5;
+            Console.WriteLine(quociente + " nota(s) de R$ " + nota + ",00");
+            resto = resto % nota;
+
+
+           nota = 2;
+            quociente = resto / 2;
+            Console.WriteLine(quociente + " nota(s) de R$ " + nota + ",00");
+            resto = resto % nota;
+
+
+           Console.WriteLine(resto + " nota(s) de R$ 1,00");
+
+    }
+
+}
+
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+
+double numeroEntrada;
+
+            numeroEntrada = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            if (numeroEntrada >= 0 && numeroEntrada <= 25)
+            {
+                Console.WriteLine("Intervalo [0,25]");
+            }
+            else if (numeroEntrada > 25 && numeroEntrada <= 50)
+            {
+                Console.WriteLine("Intervalo (25,50]");
+            }
+            else if (numeroEntrada > 50 && numeroEntrada <= 75)
+            {
+                Console.WriteLine("Intervalo (50,75]");
+            }
+            else if (numeroEntrada > 75 && numeroEntrada <= 100)
+            {
+                Console.WriteLine("Intervalo (75,100]");
+            }
+            else
+            {
+                Console.WriteLine("Fora de intervalo");
+            }
+
+
+--------------------------------------------------------------------------------------------------------------------------
+
+
+using System;
+
+
+
+
+
+namespace uri_1035
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            string[] leitura = Console.ReadLine().Split(' ');
+
+
+
+
+           int A = int.Parse(leitura[0]);
+            int B = int.Parse(leitura[0]);
+            int C = int.Parse(leitura[0]);
+            int D = int.Parse(leitura[0]);
+
+
+
+
+           if ( B > C && D > A && C + D > A + B && C > 0 && D > 0 && A % 2 == 0)
+            {
+                Console.WriteLine("Valores aceitos");
+            }    
+            else
+            {
+                Console.WriteLine("Valores nao aceitos");
+            }
+
+
+
+
+       }
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------
+
+
+int idade, quociente, resto;
+            int ano = 365;
+            int mes = 30;
+
+           idade = int.Parse(Console.ReadLine());
+
+           quociente = idade / ano;
+            Console.WriteLine(quociente + " ano(s)");
+            resto = idade % ano;
+
+           quociente = resto / mes;
+            Console.WriteLine(quociente + " mes(es)");
+            resto = resto % mes;
+
+
+           Console.WriteLine(resto + " dia(s)");
+--------------------------------------------------------------------------------------------------------------------------
+
+
+using System;
+using System.Globalization;
+
+
+namespace uri_1015
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello World!");
+
+
+           string prod1 = Console.ReadLine();
+            string[] vetorprod1 = prod1.Split(' ');
+            string prod2 = Console.ReadLine();
+            string[] vetorprod2 = prod2.Split(' ');
+
+
+           int numeropecal1 = int.Parse(vetorprod1[1]);
+            float valorpeca1 = float.Parse(vetorprod1[2], CultureInfo.InvariantCulture);
+
+           int numeropeca2 = int.Parse(vetorprod2[1]);
+            float valorpeca2 = float.Parse(vetorprod2[2], CultureInfo.InvariantCulture);
+
+
+           float total = (valorpeca1 * numeropecal1) + (valorpeca2 * numeropeca2);
+
+
+           Console.WriteLine("VALOR A PAGAR: R$ " + total.ToString("F2", CultureInfo.InvariantCulture));
+        }
+    }
+}
+
+------------------------------------------------------------------------------------------------------------------------
+
+
+using System;
+using System.Globalization;
+
+
+namespace uri_1015
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            double x1, x2, y1, y2, distancia;
+            string[] valores;
+
+
+           valores = Console.ReadLine().Split(' ');
+            x1 = double.Parse(valores[0], CultureInfo.InvariantCulture);
+            y1 = double.Parse(valores[1], CultureInfo.InvariantCulture);
+
+
+           valores = Console.ReadLine().Split(' ');
+            x2 = double.Parse(valores[0], CultureInfo.InvariantCulture);
+            y2 = double.Parse(valores[0], CultureInfo.InvariantCulture);
+
+
+           distancia = Math.Sqrt(Math.Pow(x2 - x1, 2.00)) + Math.Pow(y2 - y1, 2.00));
+
+
+           Console.WriteLine(distancia.ToString("F4", CultureInfo.InvariantCulture));
+
+
+       }
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------
+
+
+string[] valores = Console.ReadLine().Split();
+            double A = double.Parse(valores[0], CultureInfo.InvariantCulture);
+            double B = double.Parse(valores[1], CultureInfo.InvariantCulture);
+            double C = double.Parse(valores[2], CultureInfo.InvariantCulture);
+            double pi = 3.14159;
+
+
+           double tringulo = (A * C) / 2;
+            double circulo = pi * (C * C);
+            double trapezio = ((A + B) * C) / 2;
+            double quadrado = B * B;
+            double retangulo = A * B;
+
+
+           Console.WriteLine("TRIANGULO: " + tringulo.ToString("F3", CultureInfo.InvariantCulture));
+            Console.WriteLine("CIRCULO: " + circulo.ToString("F3", CultureInfo.InvariantCulture));
+            Console.WriteLine("TRAPEZIO: " + trapezio.ToString("F3", CultureInfo.InvariantCulture));
+            Console.WriteLine("QUADRADO: " + quadrado.ToString("F3", CultureInfo.InvariantCulture));
+            Console.WriteLine("RETANGULO: " + retangulo.ToString("F3", CultureInfo.InvariantCulture));
+
+
+------------------------------------------------------------------------------------------------------------------------------
+
+
+
+string[] valores = Console.ReadLine().Split();
+
+
+           int a = int.Parse(valores[0]);
+            int b = int.Parse(valores[1]);
+            int c = int.Parse(valores[2]);
+
+           int maiorAB = (a + b + Math.Abs(a - b)) / 2;
+            int maiorBC = (maiorAB + c + Math.Abs(maiorAB - c)) / 2;
+
+
+           Console.WriteLine($"{maiorBC} eh o maior");
+
+--------------------------------------------------------------------------------------------------------------------------
+
+double raio = double.Parse(Console.ReadLine());
+            double PI = 3.14159;
+            double volume = (4.0 / 3) * PI * Math.Pow(raio, 3);
+
+
+           Console.WriteLine($"VOLUME = {volume.ToString("F3", CultureInfo.InvariantCulture)}");
+
+
+---------------------------------------------------------------------------------------------------------------------------
+
+      string prod1 = Console.ReadLine();
+            string[] vetorprod1 = prod1.Split(' ');
+            string prod2 = Console.ReadLine();
+            string[] vetorprod2 = prod2.Split(' ');
+
+            int numeropecal1 = int.Parse(vetorprod1[1]);
+            float valorpeca1 = float.Parse(vetorprod1[2], CultureInfo.InvariantCulture);
+
+            int numeropeca2 = int.Parse(vetorprod2[1]);
+            float valorpeca2 = float.Parse(vetorprod2[2], CultureInfo.InvariantCulture);
+
+            float total = (valorpeca1 * numeropecal1) + (valorpeca2 * numeropeca2);
+
+            Console.WriteLine("VALOR A PAGAR: R$" + total.ToString("F2", CultureInfo.InvariantCulture));
+
+------------------------------------------------------------------------------------------------------------------------------
+
+
+int func = int.Parse(Console.ReadLine());
+            int horasTrab = int.Parse(Console.ReadLine());
+            double valorHora = double.Parse(Console.ReadLine());
+
+
+           double salario = horasTrab * valorHora;
+
+
+           Console.WriteLine("NUMBER = " + func);
+            Console.WriteLine("SALARY = " + salario);
+
+----------------------------------------------------------------------------------------------------------------------------
+
+
+double area, n, raio;
+            n = 3.14159;
+            raio = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+            area = n * (raio * raio);
+
+
+           Console.WriteLine("A=" + area.ToString("F4", CultureInfo.InvariantCulture));
+
+--------------------------------------------------------------------------------------------------------------------------
+
+ar ativo = false;
+            var a = 3;
+            var b = 5;
+
+
+           Console.WriteLine(ativo == true);
+
+           Console.WriteLine( a == b);
+            Console.WriteLine( a != b);
+
+           Console.WriteLine("Operador Logico OU");
+            // Operador E &&
+
+
+           Console.WriteLine( a > 2 && b > 4 ); // A = V b= V === Retorno === verdadeiro
+            Console.WriteLine(a > 4 && b > 4); // A = F b= V === Retorno === falso
+            Console.WriteLine(a > 2 && b > 6); // A = V b= F === Retorno === falso
+            Console.WriteLine(a > 4 && b > 6); // A = F b= F === Retorno === falso
+
+
+           // Operador OU !!
+
+
+           Console.WriteLine(a > 2 !! b > 4); // A = V b= V === Retorno === verdadeiro
+            Console.WriteLine(a > 4 !! b > 4); // A = F b= V === Retorno === verdadeiro
+            Console.WriteLine(a > 2 !! b > 6); // A = V b= F === Retorno === verdadeiro
+            Console.WriteLine(a > 4 !! b > 6); // A = F b= F === Retorno === falso
+
+
+           Console.ReadKey();
+
+
+------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+

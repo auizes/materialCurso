@@ -1,0 +1,70 @@
+//let N1 = prompt("digite um numero:")
+//let N2 = prompt("digite outro numero:")
+//let N3 = prompt("digite outro numero:")
+//let resultado = (parseFloat(N1) + parseFloat(N2) + parseFloat(N3))/3
+//console.log(" media: "+resultado.toFixed(2))
+
+
+//let ano = prompt("digite o ano que voce nasceu:")
+//let idade = 2022 - parseInt(ano)
+//if(idade >= 18 && idade < 70){
+  //alert(`voce tem ${idade} anos. voce pode votar`)
+//} else if(idade > 15 || idade < 18 || idade > 70){
+  //alert(`voce tem ${idade} anos. e opcional`)
+//}else{
+  //alert(`voce tem ${idade} anos. voce nao pode votar`)
+//}
+
+
+/*function algumaTarefa(){
+  console.log("hello world!")
+}
+algumaTarefa()*/
+
+// FUNÇÃO COM PARÂMETRO
+
+/*function precos(livro,caneta){
+let total = livro + caneta
+console.log("novo preço: "+total)
+}
+precos(5,1.99)
+precos(10,20)*/
+
+/*function digaOla(nome){
+  console.log("Olá "+nome)
+}
+digaOla("fulano")
+digaOla("beotrano")
+digaOla("zolosfreda")
+digaOla("zeze")*/
+
+//FUNÇÃO COM RETORNO
+/*function somar(x,y){
+  return x + y
+}
+alert(somar(20,80))*/
+
+
+/*function tranformar(cm){
+return cm / 100
+}
+alert(tranformar(500) + `Metros`)*/
+
+
+
+/*function tranformar(rs){
+return rs / 5
+}
+alert(tranformar(20) + `Dólar`)*/
+
+
+
+function maior(n1,n2){
+  if(n1 > n2){
+    console.log(`o numero ${n1} e maior`)
+  }else{
+    console.log(`o numero ${n2} e maior`)
+    }
+  }
+
+maior(100,1000)

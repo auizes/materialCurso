@@ -1,0 +1,471 @@
+C:\Users\gustavo.ssilva88>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 12
+Server version: 10.4.20-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| cinema             |
+| dbloja             |
+| dbportaria         |
+| information_schema |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| sucos              |
+| sucos_vendas       |
+| test               |
+| teste              |
+| zoologico          |
++--------------------+
+12 rows in set (0.001 sec)
+
+MariaDB [(none)]> D:\ProjetoSQLTI106\tbprodutos.sql
+ERROR: Unknown command '\P'.
+Outfile disabled.
+    -> Bye
+Ctrl-C -- exit!
+
+C:\Users\gustavo.ssilva88>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 13
+Server version: 10.4.20-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> source D:\ProjetoSQLTI106\tbprodutos.sql
+ERROR: Failed to open file 'D:\ProjetoSQLTI106\tbprodutos.sql', error: 2
+MariaDB [(none)]> source D:\ProjetoSQLTI106\dbprodutos.sql
+ERROR 1008 (HY000) at line 1 in file: 'D:\ProjetoSQLTI106\dbprodutos.sql': Can't drop database 'dbprodutos'; database doesn't exist
+Query OK, 1 row affected (0.002 sec)
+
+Database changed
+Query OK, 0 rows affected (0.195 sec)
+
+Query OK, 1 row affected (0.176 sec)
+
+Query OK, 1 row affected (0.038 sec)
+
+Query OK, 1 row affected (0.075 sec)
+
+Query OK, 1 row affected (0.024 sec)
+
+Query OK, 1 row affected (0.025 sec)
+
+Query OK, 1 row affected (0.023 sec)
+
+Query OK, 1 row affected (0.025 sec)
+
+Query OK, 1 row affected (0.040 sec)
+
+Query OK, 1 row affected (0.023 sec)
+
+Query OK, 1 row affected (0.025 sec)
+
++------------+---------------+------+-----+---------+-------+
+| Field      | Type          | Null | Key | Default | Extra |
++------------+---------------+------+-----+---------+-------+
+| CODIGO     | int(11)       | YES  |     | NULL    |       |
+| NOME       | varchar(50)   | YES  |     | NULL    |       |
+| TIPO       | varchar(25)   | YES  |     | NULL    |       |
+| QUANTIDADE | int(11)       | YES  |     | NULL    |       |
+| VALOR      | decimal(10,2) | YES  |     | NULL    |       |
++------------+---------------+------+-----+---------+-------+
+5 rows in set (0.006 sec)
+
++--------+-------------------+-------------+------------+--------+
+| CODIGO | NOME              | TIPO        | QUANTIDADE | VALOR  |
++--------+-------------------+-------------+------------+--------+
+|      1 | IMPRESSORA        | INFORMATICA |        200 | 600.00 |
+|      2 | CAMERA DIGITAL    | DIGITAIS    |        300 | 400.00 |
+|      3 | DVD PLAYER        | ELETRONICOS |        250 | 500.00 |
+|      4 | MONITOR           | INFORMATICA |        400 | 900.00 |
+|      5 | TELEVISOR         | ELETRONICOS |        350 | 650.00 |
+|      6 | FILMADORA DIGITAL | DIGITAIS    |        500 | 700.00 |
+|      7 | CELULAR           | TELEFONE    |        450 | 850.00 |
+|      8 | TECLADO           | INFORMATICA |        300 | 450.00 |
+|      9 | VIDEOCASSETE      | ELETRONICOS |        200 | 300.00 |
+|     10 | MOUSE             | INFORMATICA |        400 |  60.00 |
++--------+-------------------+-------------+------------+--------+
+10 rows in set (0.001 sec)
+
+MariaDB [dbProdutos]> select * from produtos where valor > 400 and valor < 600;
++--------+------------+-------------+------------+--------+
+| CODIGO | NOME       | TIPO        | QUANTIDADE | VALOR  |
++--------+------------+-------------+------------+--------+
+|      3 | DVD PLAYER | ELETRONICOS |        250 | 500.00 |
+|      8 | TECLADO    | INFORMATICA |        300 | 450.00 |
++--------+------------+-------------+------------+--------+
+2 rows in set (0.031 sec)
+
+MariaDB [dbProdutos]> select * from produtos where nome = 'morango' or valor < 600;
++--------+----------------+-------------+------------+--------+
+| CODIGO | NOME           | TIPO        | QUANTIDADE | VALOR  |
++--------+----------------+-------------+------------+--------+
+|      2 | CAMERA DIGITAL | DIGITAIS    |        300 | 400.00 |
+|      3 | DVD PLAYER     | ELETRONICOS |        250 | 500.00 |
+|      8 | TECLADO        | INFORMATICA |        300 | 450.00 |
+|      9 | VIDEOCASSETE   | ELETRONICOS |        200 | 300.00 |
+|     10 | MOUSE          | INFORMATICA |        400 |  60.00 |
++--------+----------------+-------------+------------+--------+
+5 rows in set (0.011 sec)
+
+MariaDB [dbProdutos]>
+
+
+
+
+MariaDB [dbProdutos]> uptade produtos set valor = valor * 1.10 where tipo = 'digitais';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'uptade produtos set valor = valor * 1.10 where tipo = 'digitais'' at line 1
+MariaDB [dbProdutos]> update produtos set valor = valor * 1.10 where tipo = 'digitais';
+Query OK, 2 rows affected (0.071 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [dbProdutos]> select * from produtos where tipo = 'digitais';
++--------+-------------------+----------+------------+--------+
+| CODIGO | NOME              | TIPO     | QUANTIDADE | VALOR  |
++--------+-------------------+----------+------------+--------+
+|      2 | CAMERA DIGITAL    | DIGITAIS |        300 | 440.00 |
+|      6 | FILMADORA DIGITAL | DIGITAIS |        500 | 770.00 |
++--------+-------------------+----------+------------+--------+
+2 rows in set (0.001 sec)
+
+MariaDB [dbProdutos]> updates produtos set valor = valor * 0.80 where nome like '%u%';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'updates produtos set valor = valor * 0.80 where nome like '%u%'' at line 1
+MariaDB [dbProdutos]> update produtos set valor = valor * 0.80 where nome like '%u%';
+Query OK, 2 rows affected (0.072 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [dbProdutos]> select * from produtos where nome like '%u%';
++--------+---------+-------------+------------+--------+
+| CODIGO | NOME    | TIPO        | QUANTIDADE | VALOR  |
++--------+---------+-------------+------------+--------+
+|      7 | CELULAR | TELEFONE    |        450 | 680.00 |
+|     10 | MOUSE   | INFORMATICA |        400 |  48.00 |
++--------+---------+-------------+------------+--------+
+2 rows in set (0.001 sec)
+
+MariaDB [dbProdutos]> update updates produtos set quantidade = quandidate + 8 where tipo = 'eletronicos';
+ERROR 1146 (42S02): Table 'dbprodutos.updates' doesn't exist
+MariaDB [dbProdutos]> update produtos set quantidade = quandidate + 8 where tipo = 'eletronicos';
+ERROR 1054 (42S22): Unknown column 'quandidate' in 'field list'
+MariaDB [dbProdutos]> update produtos set quantidade = quandidate + 8 where tipo = 'eletronicos';
+ERROR 1054 (42S22): Unknown column 'quandidate' in 'field list'
+MariaDB [dbProdutos]> update produtos set quantidade = quantidade + 8 where tipo = 'eletronicos';
+Query OK, 3 rows affected (0.045 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+MariaDB [dbProdutos]> select * from produtos where tipo='eletronicos';
++--------+--------------+-------------+------------+--------+
+| CODIGO | NOME         | TIPO        | QUANTIDADE | VALOR  |
++--------+--------------+-------------+------------+--------+
+|      3 | DVD PLAYER   | ELETRONICOS |        258 | 500.00 |
+|      5 | TELEVISOR    | ELETRONICOS |        358 | 650.00 |
+|      9 | VIDEOCASSETE | ELETRONICOS |        208 | 300.00 |
++--------+--------------+-------------+------------+--------+
+3 rows in set (0.001 sec)
+
+MariaDB [dbProdutos]> update produtos set valor = valor * 1.05 where tipo = 'eletronicos' and valor < 600.00;
+Query OK, 2 rows affected (0.047 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+MariaDB [dbProdutos]> select * from produtos where tipo = 'eletronicos' and valor < 600;
++--------+--------------+-------------+------------+--------+
+| CODIGO | NOME         | TIPO        | QUANTIDADE | VALOR  |
++--------+--------------+-------------+------------+--------+
+|      3 | DVD PLAYER   | ELETRONICOS |        258 | 525.00 |
+|      9 | VIDEOCASSETE | ELETRONICOS |        208 | 315.00 |
++--------+--------------+-------------+------------+--------+
+2 rows in set (0.014 sec)
+
+MariaDB [dbProdutos]>
+
+
+ update produtos set valor = valor * 1.12 where nome like '%f%';
+select * from produtos where nome like '%f%';
+
+
+
+-- exercicio 2
+update produtos set quantidade = quantidade + 50 where valor > 400 and valor < 600;
+
+
+
+-- exercicio 3
+update produtos set valor = valor * 0.50 where quantidade > 300;
+
+
+
+-- exercicio 4
+select * produtos where codigo = 4;
+
+
+-- exercico 5
+select * from produtos where nome not like '%y%';
+
+-- exercicio 6
+select * from produtos nome like 'MO%' and tipo like '%MA%';
+
+
+
+
+
+EU
+
+create database tbEsacionamento;
+
+use tbEsacionamento;
+
+CREATE TABLE ESTACIONAMENTO
+(
+codigo int auto_increment,
+placa varchar(12),
+cor varchar(10),
+modelo varchar(10),
+ano char(4),
+data de entrada date,
+hora entrada time,
+data saida date,
+hora saida time,
+primary key(codigo)
+);
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida)values('thrt7484','azul',
+'ferrari458italia', '2009', '12/11/2015', '11:31:00', '13/11/2015', '12:00:00');
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida)values('xtr4548','black',
+'bugattiChiron', '2016', '25/12/2020', '13:20:00', '26/12/2020', '14:40:00');
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida)values('tug2169','branco',
+'LamborghiniAventador', '2011', '01/01/2021', '10:10:00', '02/01/2021', '13:00:00');
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida)values('ert1245','vermelho',
+'mclarenp1', '2013', '10/02/2021', '16:50:00', '11/02/2021', '17:30:00');
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida)values('jgy6554','ciano',
+'KoenigseggAgera', '2018', '20/02/2021', '09:10:00', '21/02/2021', '10:00:00');
+
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida)values('wqr1456','bege',
+'porschepanamera', '2014', '22/02/2021', '08:30:00', '23/02/2021', '09:00:00');
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida)values('lgy7852','vermelho',
+'audir8', '2007', '23/02/2021', '14:00:00', '24/02/2021', '15:30:00');
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida)values('fhd2554','amarelo',
+'camaro', '2021', '24/02/2021', '15:40:00', '25/02/2021', '14:30:00');
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida)values('fgf5456','branco',
+'lykanhypersport', '2014', '08/03/2021', '12:00:00', '09/03/2021', '13:0:00');
+
+insert into tbEsacionamento(codigo,placa,cor,modelo,ano,data entrada,hora entrada,data saida,hora saida)values('yui1234','preto',
+'fuscãopreto', '2003', '09/03/2021', '13:20:00', '10/03/2021', '15:30:00');
+
+
+
+
+
+
+
+
+
+
+limit
+
+select * from produtos limit 5;
+
+select * from produtos order by valor desc limit 5;
+
+
+
+drop database dbEmpresa;
+
+create database dbEmpresa;
+
+use dbEmpresa;
+
+create table tbFuncionarios(
+codfunc int not null auto_increment,
+nome varchar(100),
+email varchar(100),
+cpf char(14) not null unique,
+salario decimal(9,2) not null default 0 check(salario >= 0),
+sexo char(1) default 'F' check(sexo in('F','M')),
+primary key(codfunc)
+);
+
+
+create table tbUsuarios(
+codusu int not null auto_increment,
+nome varchar(20) not null,
+senha varchar(20) not null,
+codfunc int not null,
+primary key(codusu),
+foreign key(codfunc)references tbFuncionarios(codfunc)
+);
+
+
+create table tbProdutos(
+codProd int not null auto_increment,
+descricao varchar(100),
+quantidade int default 0 check(quantidade >= 0),
+valor decimal(9,2) check(valor >= 0),
+codusu int not null,
+primary key(codProd),
+foreign key(codusu)references tbUsuarios(codusu)
+);
+
+desc tbProdutos;
+desc tbUsuarios;
+desc tbFuncionarios;
+
+
+insert into tbFuncionarios(nome,email,cpf,salario,sexo)
+values('Paulo Miranda da Silva','paulo.msilva@hotmail.com','258.247.248-00','1500.00','M');
+
+insert into tbUsuarios(nome,senha,codfunc)values('paulo.msilva','123456',1);
+
+
+insert into tbProdutos(descricao,quantidade,valor,codusu)values('Banana',12,10.35,1);
+
+
+select * from tbFuncionarios;
+select * from tbUsuarios;
+select * from tbProdutos;
+
+C:\Users\gustavo.ssilva88>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 53
+Server version: 10.4.20-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> source D:\ProjetoSQLTI106\dbempresa.sql
+ERROR 1008 (HY000) at line 1 in file: 'D:\ProjetoSQLTI106\dbempresa.sql': Can't drop database 'dbempresa'; database doesn't exist
+Query OK, 1 row affected (0.002 sec)
+
+
+
+source D:\ProjetoSQLTI106\dbEmpresa.sql
+
+drop database dbEmpresa;
+
+create database dbEmpresa;
+
+use dbEmpresa;
+
+create table tbFuncionarios(
+codfunc int not null auto_increment,
+nome varchar(100),
+email varchar(100),
+cpf char(14) not null unique,
+salario decimal(9,2) not null default 0 check(salario >= 0),
+sexo char(1) default 'F' check(sexo in('F','M')),
+primary key(codfunc)
+);
+
+
+create table tbUsuarios(
+codusu int not null auto_increment,
+nome varchar(20) not null,
+senha varchar(20) not null,
+codfunc int not null,
+primary key(codusu),
+foreign key(codfunc)references tbFuncionarios(codfunc)
+);
+
+
+create table tbFornecedores(
+codForn int not null auto_increment,
+nome varchar(100),
+cnpj char(18),
+inscrEst char(15),
+email varchar(100),
+telefone char(10),
+primary key(codForn)
+);
+
+
+create table tbProdutos(
+codProd int not null auto_increment,
+descricao varchar(100),
+quantidade int default 0 check(quantidade >= 0),
+valor decimal(9,2) check(valor >= 0),
+codForn int not null,
+primary key(codProd),
+foreign key(codForn)references tbFornecedores(codForn)
+);
+
+
+create table tbClientes(
+codCli int not null auto_increment,
+nome varchar(100),
+email varchar(100),
+cpf char(14) not null unique,
+telefone char(10),
+primary key(codCli)
+);
+
+create table tbVendas(
+codVend int not null auto_increment,
+codProd int not null,
+codCli int not null,
+codusu int not null,
+dataVenda date,
+horaVenda time,
+quantidade int,
+primary key(codVend),
+foreign key(codProd)references tbProdutos(codProd),
+foreign key(codCli)references tbClientes(codCli),
+foreign key(codusu)references tbUsuarios(codusu)
+);
+
+
+desc tbProdutos;
+desc tbUsuarios;
+desc tbFuncionarios;
+desc tbFornecedores;
+desc tbVendas;
+desc tbClientes;
+
+
+insert into tbFuncionarios(nome,email,cpf,salario,sexo)
+values('Paulo Miranda da Silva','paulo.msilva@hotmail.com','258.247.248-00','1500.00','M');
+
+insert into tbUsuarios(nome,senha,codfunc) values ('paulo.msilva','123456',1);
+
+insert into tbFornecedores(nome,cnpj,inscrEst,email,telefone) values ('fabricantes S/A','25.147.235/0001-38','253.235.147-110',
+'sac@empresa.com.br','97485-8574');	
+
+insert into tbClientes(nome,email,cpf,telefone) values ('Paulo albuquerque da vila','paulo.avila@hotmail.com','245.236.852-99',
+'97852-1475');
+
+insert into tbProdutos(descricao,quantidade,valor,codForn) values ('Banana',12,10.35,1);
+
+insert into tbVendas(codProd,codCli,codusu,dataVenda,horaVenda,quantidade) values (1,1,1'2022/11/17','15:42:02',10);
+
+
+
+select * from tbFuncionarios;
+select * from tbUsuarios;
+select * from tbFornecedores;
+select * from tbProdutos;
+select * from tbClientes;
+select * from tbVendas;

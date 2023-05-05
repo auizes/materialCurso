@@ -1,0 +1,23 @@
+Processo para startar o mysql
+
+ctrl + S = para salvar no sublime
+
+source D:\ProjetoSQLTI106\dbloja.sql
+
+- Abrir o sublime
+- Abrir o xampp, start no MySQL
+- Abrir o cmd, e digitar os seguintes comandos:
+
+CMD Comandos 1 - mysql -u root -p
+2 - Show databases;
+3 - Use dbloja;
+
+4 - desc tbFuncionarios;
+ou
+desc tbUsuarios;
+5 -  select * from tbprodutos;
+6 - 
+
+Executar o script (pode ser dentro do dbloja) = source D:\ProjetoSQLTI106\dbloja.sql
+serve tambem para atualizar o DB
+

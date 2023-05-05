@@ -1,0 +1,29 @@
+.logo2{
+    display: flex;
+    background-color: aqua;
+    margin-right: 999px;
+    
+    
+
+}
+
+
+.menu{
+    display: flex; 
+    justify-content:space-between;
+}
+
+
+.active{
+    display: flex;
+    justify-content:space-between
+}
+
+
+.logo{
+    display: flex;
+    justify-items: center;
+    justify-content: space-around;
+
+}
+

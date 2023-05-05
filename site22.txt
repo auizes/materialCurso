@@ -1,0 +1,267 @@
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <div class="conteiner">
+        <div class="logo">
+            <a href="#"> <img src="imagens/logo.png" alt=""> </a>
+        </div>
+
+
+        <div class="menu">
+            <nav>
+                <ul>
+                    <li class="active"><a href=""> INICIO </a></li>
+                    <li> <a href=""> CONSULTA </a> </li>
+                    <li> <a href=""> CONVÊNIOS </a> </li>
+                    <li> <a href=""> FALE CONCOSCO </a> </li>
+                    <li> <a href=""> SOBRE NÓS </a> </li>
+                </ul>
+            </nav>
+        </div>
+
+    
+
+    </div>
+</header>
+
+<section id="banner">
+    <div class="container column">
+
+        <div class="oi">
+            <h1>Experiência Incrivel</h1>
+            <h2>Conheça valores que cabem no seu bolso</h2>
+        </div>
+
+        <div class="io">
+            <div class="banner1">
+                <div class="banner_title">Emergências</div>
+                <div class="banner_desc">Sem agendamento prévisto. visite-nos e seja atendido</div>
+                <a href="">Saiba mais</a>
+                
+
+            </div>
+
+            <div class="banner2">
+                <div class="banner_title">Resultados do exame</div>
+                <div class="banner_desc">Consulte resultados de exames realizados</div>
+                <a href="">Saiba mais</a>
+
+
+            </div>
+
+            <div class="banner3">
+
+                <div class="banner_title">Planos e Convênios</div>
+                <div class="banner_desc">Planos de saúde empresarial Smart 200 SP Capital</div>
+                <a href="">Saiba mais</a>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="geral">
+
+    <div class="container">
+
+        <section>
+            <div class="content_title">
+                <div class="content_title_text"> Departamentos</div>
+                <div class="content_bar"></div>
+           </div>
+           <div class="content_body">
+               texto
+           </div>
+
+            <div class="content_title">
+                <div class="content_title_text"> Planos e conventos</div>
+                <div class="content_bar"></div>
+            </div>
+            <div class="content_body">
+                texto
+            </div>
+        </section>
+
+    </div>
+
+
+
+</section>
+
+
+<footer>
+    <div id="rodape">
+        medicenter copyright - todos os direitos reservados 
+    </div>
+</footer>
+
+</body>
+</html>
+
+
+css
+body{
+    margin: 0;
+    padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+
+header{
+    display: flex;
+    justify-content: center;
+    height: 120px;
+}
+
+
+.container{
+   width: 990px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.logo{
+    
+    display: flex;
+    align-items: center;
+}
+
+.menu{
+    display: flex;
+    align-items: center;
+}
+
+nav ul, nav li{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+nav ul{
+    display: flex;
+}
+
+nav a{
+    display: block;
+    text-decoration: none;
+    padding: 15px;
+    color: black;
+}
+
+nav .active, nav a:hover {
+    background-color: rgb(77, 182, 231);
+    color: #ffff;
+}
+
+#banner{
+    background-image: url('./imagens/img1.jpeg');
+    height: 670px;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+}
+
+.oi{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+}
+
+.oi h1{
+    color: #ffff;
+    font-size: 70px;
+    text-shadow: 0px 1px 0px #5555 ;
+    margin: 0;
+    padding: 0;
+    max-width: 350px;
+}
+
+.oi h2{
+    color: #ffff;
+    font-size: 21px;
+    text-shadow: 0px 1px 0px;
+    margin: 0;
+    padding: 0;
+    margin-top: 30px;
+    max-width: 350px;
+}
+
+.io{
+    height: 210px;
+    display: flex;
+    
+}
+
+.banner1,.banner2,.banner3{
+    flex: 1;
+    color: #ffff;
+    padding: 20px;
+}
+
+.banner1{
+    background-color:deepskyblue;
+}
+ .banner2{
+    background-color:cornflowerblue;
+ }
+
+ .banner3{
+    background-color:blue;
+ }
+
+
+.column{
+    flex-direction: column;
+}
+
+.banner_title{
+    font-size: 20px;
+}
+.banner_desc{
+    font-size: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.io a{
+    border: 1px solid #fff;
+    color: #fff;
+    text-decoration: none;
+    padding: 5px;
+
+}
+
+#geral{
+    display: flex;
+    justify-content: center;
+}
+
+.content_title{
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+.content_title_text{
+    font-size: 21px;
+    font-weight: bold;
+}
+.content_bar{
+    width: 50px;
+    height: 5px;
+    background-color: turquoise;
+    margin-top: 10px;
+}
+
+#rodape{
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    height: 40px;
+    line-height: 40px;
+    color: #5555;
+    font-size: 12px;
+    margin-top: 30px;
+}

@@ -1,0 +1,34 @@
+SUBIR PROJETO NO GITHUB PELA PRIMEIRA VEZ
+git init 
+git add .
+git commit -m "first commit" 
+git remote add origin LINK-DO-SEU-REPOSITORIO 
+git push -u origin master
+
+ATUALIZAR PROJETO NO GITHUB
+git init 
+git add .
+git commit -m "first commit" 
+git push -u origin master
+
+.pc2 img{
+    -webkit-transition: -webkit-transform .5s ease;
+    transition: transform .5s ease;
+}
+.pc2:hover img{
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+
+.menu{
+    display: flex;
+    align-items: center;
+    -webkit-transition: -webkit-transform .5s ease;
+    transition: transform .5s ease;
+}
+
+.menu:hover{
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+}
+

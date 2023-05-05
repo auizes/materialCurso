@@ -1,0 +1,114 @@
+anotacao de BD
+
+
+Valor - R$ 100,00
+Porcentagem - 10%
+
+(valor * porcentagem / 100)
+
+Desconto:
+
+valor -(valor * porcentagem / 100)
+
+Acrescimo:
+
+valor +(valor * porcentagem / 100)
+
+Valor -> R$ 100,00
+
+
+Desconto
+
+100 * 0.90
+
+Acrescimo
+
+100 * 1.15
+
+select descricao,preco * 0.90 from tbprodutos;
+
+source D:\ProjetoSQLTI106\dbloja.sql
+
+use dbloja;
+
+mysql -u root -p
+
+MariaDB [dbloja]> select descricao, preco * 0.90 as 'Preço' from tbprodutos;
++-----------+---------+
+| descricao | Preço   |
++-----------+---------+
+| Banana    | 18.4500 |
+| Melancia  | 27.0000 |
+| Morango   |  9.4500 |
++-----------+---------+
+3 rows in set (0.001 sec)
+
+MariaDB [dbloja]> select descricao as 'Descrição', preco *0.90 as 'Preço' from tbprodutos;
++-----------+---------+
+| Descrição | Preço   |
++-----------+---------+
+| Banana    | 18.4500 |
+| Melancia  | 27.0000 |
+| Morango   |  9.4500 |
++-----------+---------+
+3 rows in set (0.001 sec)
+
+MariaDB [dbloja]> select descricao as 'Nome do produto', preco as 'Preço', preco * 1.10 as 'Preço com 10% de aumento' from tbprodutos;
++-----------------+-------+--------------------------+
+| Nome do produto | Preço | Preço com 10% de aumento |
++-----------------+-------+--------------------------+
+| Banana          | 20.50 |                  22.5500 |
+| Melancia        | 30.00 |                  33.0000 |
+| Morango         | 10.50 |                  11.5500 |
++-----------------+-------+--------------------------+
+3 rows in set (0.001 sec)
+
+MariaDB [dbloja]> select 'Tem no estoque' as 'Status', descricao as 'Descrição' from tbprodutos;
++----------------+-----------+
+| Status         | Descrição |
++----------------+-----------+
+| Tem no estoque | Banana    |
+| Tem no estoque | Melancia  |
+| Tem no estoque | Morango   |
++----------------+-----------+
+3 rows in set (0.001 sec)
+
+MariaDB [dbloja]>
+
+
+MariaDB [dbloja]> select descricao as 'Descrição', 'Tem no estoque' as 'Status' from tbprodutos;
++-----------+----------------+
+| Descrição | Status         |
++-----------+----------------+
+| Banana    | Tem no estoque |
+| Melancia  | Tem no estoque |
+| Morango   | Tem no estoque |
++-----------+----------------+
+3 rows in set (0.001 sec)
+
+update tbprodutos set preco = preco * 1.10 where preco > 11.00;
+select * from tbprodutos;
++---------+-----------+-------+------------+------------+---------+
+| codProd | descricao | preco | validade   | quantidade | tipo    |
++---------+-----------+-------+------------+------------+---------+
+|       1 | Banana    | 22.55 | 2022-11-07 |         12 | Duzia   |
+|       2 | Melancia  | 33.00 | 2022-11-30 |          1 | unidade |
+|       3 | Morango   | 10.50 | 2022-11-08 |          1 | caixa   |
++---------+-----------+-------+------------+------------+---------+
+
+
+select * from tbprodutos where codProd = 1;
++---------+-----------+-------+------------+------------+-------+
+| codProd | descricao | preco | validade   | quantidade | tipo  |
++---------+-----------+-------+------------+------------+-------+
+|       1 | Banana    | 22.55 | 2022-11-07 |         12 | Duzia |
++---------+-----------+-------+------------+------------+-------+
+
+from tbprodutos where nome
+select * from tbprodutos where descricao like '%o';
+
+select * from tbprodutos where descricao like '%a%';
+
+select * from tbprodutos where descricao like 'm%';
+
+
